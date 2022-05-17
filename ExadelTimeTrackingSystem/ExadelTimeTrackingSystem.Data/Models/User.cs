@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExadelTimeTrackingSystem.Data.Models
+﻿namespace ExadelTimeTrackingSystem.Data.Models
 {
-    public class User
+    using System;
+    using ExadelTimeTrackingSystem.Data.Models.Abstract;
+    using ExadelTimeTrackingSystem.Data.Models.Enums;
+
+    public class User : IDocument
     {
-        public string _id { get; set; }
+        public Guid Id { get; set; }
 
         public string FullName { get; set; }
 
@@ -18,9 +16,6 @@ namespace ExadelTimeTrackingSystem.Data.Models
 
         public string Password { get; set; }
 
-        public string[] Roles { get; set; }
-
+        public Role[] Roles { get; set; }
     }
-
 }
-

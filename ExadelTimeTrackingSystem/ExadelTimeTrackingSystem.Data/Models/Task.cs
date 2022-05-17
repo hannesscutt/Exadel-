@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExadelTimeTrackingSystem.Data.Models
+﻿namespace ExadelTimeTrackingSystem.Data.Models
 {
-    public class Task
+    using System;
+    using ExadelTimeTrackingSystem.Data.Models.Abstract;
+    using ExadelTimeTrackingSystem.Data.Models.Enums;
+
+    public class Task : IDocument
     {
-        public string _id { get; set; }
+        public Guid Id { get; set; }
 
-        public int TimeSpent { get; set; }
+        public int HoursSpent { get; set; }
 
-        public string Status { get; set; }
+        public Status Status { get; set; }
 
         public string Activity { get; set; }
 
-        public string ApproverID { get; set; }
+        public Guid ApproverId { get; set; }
 
         public DateTime Date { get; set; }
 
-        public string EmployeeID { get; set; }
+        public Guid EmployeeId { get; set; }
 
         public bool IsOvertime { get; set; }
 
         public string ProjectName { get; set; }
-
     }
 }

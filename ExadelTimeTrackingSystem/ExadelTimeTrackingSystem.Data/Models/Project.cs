@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExadelTimeTrackingSystem.Data.Models
+﻿namespace ExadelTimeTrackingSystem.Data.Models
 {
-    public class Project
-    {
-        public string _id { get; set; }
+    using System;
+    using ExadelTimeTrackingSystem.Data.Models.Abstract;
 
-        public int[] Activities { get; set; }
+    public class Project : IDocument
+    {
+        public Guid Id { get; set; }
+
+        public string[] Activities { get; set; }
 
         public string Name { get; set; }
 
-        public string ApproverID { get; set; }
+        public Guid ApproverId { get; set; }
 
-        public string[] EmployeeIDs { get; set; }
+        public Guid[] EmployeeIds { get; set; }
     }
 }
