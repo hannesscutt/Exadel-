@@ -2,12 +2,12 @@
 // attributes that are applied to this project.
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
-namespace ExadelTimeTrackingSystem.Data.Models.Enums
+namespace ExadelTimeTrackingSystem.BusinessLogic.DTOs
 {
-    public enum Status
+    using System;
+
+    public class ProjectDTO : CreateProjectDTO
     {
-        Approved,
-        WaitingForApproval,
-        Pending,
+        public Guid Id { get; set; }
     }
 }

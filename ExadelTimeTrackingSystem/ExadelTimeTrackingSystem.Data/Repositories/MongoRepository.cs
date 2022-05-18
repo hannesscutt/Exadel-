@@ -1,4 +1,8 @@
-﻿namespace ExadelTimeTrackingSystem.Data.Repositories
+﻿// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+namespace ExadelTimeTrackingSystem.Data.Repositories
 {
     using System;
     using System.Collections.Generic;
@@ -38,9 +42,9 @@
             return GetCollection<TDocument>().InsertOneAsync(document);
         }
 
-        private IMongoCollection<TDocument> GetCollection<TDocument>()
+        private IMongoCollection<TDocument> GetCollection<TDocument2>()
         {
-            return _database.GetCollection<TDocument>(typeof(TDocument).Name);
+            return _database.GetCollection<TDocument>(typeof(TDocument2).Name);
         }
     }
 }

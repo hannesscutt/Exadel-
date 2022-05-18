@@ -2,20 +2,19 @@
 // attributes that are applied to this project.
 // Project-level suppressions either have no target or are given
 // a specific target and scoped to a namespace, type, member, etc.
-namespace ExadelTimeTrackingSystem.Data.Repositories.Abstract
+namespace ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract
 {
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using ExadelTimeTrackingSystem.Data.Models.Abstract;
+    using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
 
-    public interface IMongoRepository<TDocument>
-        where TDocument : IDocument
+    public interface IProjectService
     {
-        Task<List<TDocument>> GetAllAsync();
+        Task<List<ProjectDTO>> GetAllAsync();
 
-        Task<TDocument> GetByIdAsync(Guid id);
+        Task<ProjectDTO> GetByIdAsync(Guid id);
 
-        Task InsertOneAsync(TDocument document);
+        Task CreateAsync(CreateProjectDTO project);
     }
 }

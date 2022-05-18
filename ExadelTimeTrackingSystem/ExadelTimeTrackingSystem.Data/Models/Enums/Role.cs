@@ -4,6 +4,6 @@
     {
         Employee,
         Approver,
-        Admin
+        Admin,
     }
 }

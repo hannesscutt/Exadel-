@@ -1,8 +1,14 @@
+// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
 namespace ExadelTimeTrackingSystem.WebAPI
 {
     using ExadelTimeTrackingSystem.Data;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
+    using ExadelTimeTrackingSystem.WebAPI.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -27,7 +33,8 @@ namespace ExadelTimeTrackingSystem.WebAPI
 
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
         serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
-
+            services.AddRepositories();
+            services.AddProjectServices();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
