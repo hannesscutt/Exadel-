@@ -1,6 +1,9 @@
 ﻿namespace ExadelTimeTrackingSystem.BusinessLogic.DTOs
 {
-    public class StatusDTO : CreateStatusDTO
+    public enum StatusDTO
     {
+        Approved,
+        WaitingForApproval,
+        Pending,
     }
 }

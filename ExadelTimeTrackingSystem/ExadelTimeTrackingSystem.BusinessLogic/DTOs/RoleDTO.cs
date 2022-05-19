@@ -1,6 +1,9 @@
 ﻿namespace ExadelTimeTrackingSystem.BusinessLogic.DTOs
 {
-    public class RoleDTO : CreateRoleDTO
+    public enum RoleDTO
     {
+        Employee,
+        Approver,
+        Admin,
     }
 }

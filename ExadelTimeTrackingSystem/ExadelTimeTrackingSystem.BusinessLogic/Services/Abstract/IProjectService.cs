@@ -15,6 +15,6 @@ namespace ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract
 
         Task<ProjectDTO> GetByIdAsync(Guid id);
 
-        Task CreateAsync(CreateProjectDTO project);
+        Task<ProjectDTO> CreateAsync(CreateProjectDTO project);
     }
 }

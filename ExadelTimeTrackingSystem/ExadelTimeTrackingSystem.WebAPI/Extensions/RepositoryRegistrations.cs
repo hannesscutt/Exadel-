@@ -18,7 +18,7 @@ namespace ExadelTimeTrackingSystem.WebAPI.Extensions
             return services;
         }
 
-        public static IServiceCollection AddProjectServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<IProjectService, ProjectService>();
             return services;

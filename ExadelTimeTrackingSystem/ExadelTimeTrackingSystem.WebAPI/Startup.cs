@@ -34,7 +34,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
         serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
             services.AddRepositories();
-            services.AddProjectServices();
+            services.AddServices();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
