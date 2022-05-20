@@ -11,8 +11,8 @@
         public UserProfile()
         {
             CreateMap<User, UserDTO>();
-            CreateMap<Role, RoleDTO>();
-            CreateMap<Role, RoleDTO>().ReverseMap();
+            CreateMap<Role, RoleDTO>()
+                .ReverseMap();
             CreateMap<CreateUserDTO, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }

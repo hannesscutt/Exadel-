@@ -11,8 +11,8 @@
         public TaskProfile()
         {
             CreateMap<Task, TaskDTO>();
-            CreateMap<Status, StatusDTO>();
-            CreateMap<Status, StatusDTO>().ReverseMap();
+            CreateMap<Status, StatusDTO>()
+                .ReverseMap();
             CreateMap<CreateTaskDTO, Task>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
         }
