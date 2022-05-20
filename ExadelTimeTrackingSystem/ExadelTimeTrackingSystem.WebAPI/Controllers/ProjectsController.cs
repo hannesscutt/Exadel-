@@ -25,18 +25,18 @@
            return Ok(projects);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<ProjectDTO>> GetByIdAsync([FromRoute] Guid id)
         {
             var project = await _service.GetByIdAsync(id);
-            return (project == null) ? NotFound() : Ok(project);
+            return project == null ? NotFound() : Ok(project);
         }
 
         [HttpPost]
         public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] CreateProjectDTO project)
         {
             var projectDto = await _service.CreateAsync(project);
-            return Created("id", projectDto);
+            return Created(string.Empty, projectDto);
         }
     }
 }
