@@ -12,6 +12,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -32,8 +33,9 @@ namespace ExadelTimeTrackingSystem.WebAPI
         {
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
 
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
-        serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+                serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
             services.AddRepositories();
             services.AddServices();
             services.AddSingleton(MapperExtensions.Mapper);

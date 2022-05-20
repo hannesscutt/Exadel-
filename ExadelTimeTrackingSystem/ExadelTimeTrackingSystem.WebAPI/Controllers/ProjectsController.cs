@@ -25,25 +25,18 @@
            return Ok(projects);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ProjectDTO>> GetByIdAsync(Guid id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProjectDTO>> GetByIdAsync([FromRoute] Guid id)
         {
             var project = await _service.GetByIdAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return Ok(project);
-            }
+            return (project == null) ? NotFound() : Ok(project);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ProjectDTO>> CreateAsync(ProjectDTO project)
+        [HttpPost]
+        public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] CreateProjectDTO project)
         {
-            await _service.CreateAsync(project);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = project.Id }, project);
+            var projectDto = await _service.CreateAsync(project);
+            return Created("id", projectDto);
         }
     }
 }

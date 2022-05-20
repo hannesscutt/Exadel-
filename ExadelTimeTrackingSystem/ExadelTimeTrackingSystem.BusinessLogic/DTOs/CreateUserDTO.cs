@@ -12,6 +12,6 @@
 
         public string Password { get; set; }
 
-        public Role[] Roles { get; set; }
+        public RoleDTO[] Roles { get; set; }
     }
 }
