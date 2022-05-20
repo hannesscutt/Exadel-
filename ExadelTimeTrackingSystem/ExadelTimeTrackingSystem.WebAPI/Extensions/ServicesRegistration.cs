@@ -10,11 +10,11 @@ namespace ExadelTimeTrackingSystem.WebAPI.Extensions
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
     using Microsoft.Extensions.DependencyInjection;
 
-    public static class RepositoryRegistrations
+    public static class ServicesRegistration
     {
-        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddSingleton<IProjectRepository, ProjectRepository>();
+            services.AddSingleton<IProjectService, ProjectService>();
             return services;
         }
     }

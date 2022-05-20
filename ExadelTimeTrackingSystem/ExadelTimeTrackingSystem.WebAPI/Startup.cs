@@ -5,6 +5,7 @@
 
 namespace ExadelTimeTrackingSystem.WebAPI
 {
+    using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.Data;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
@@ -35,6 +36,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
         serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
             services.AddRepositories();
             services.AddServices();
+            services.AddSingleton(MapperExtensions.Mapper);
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

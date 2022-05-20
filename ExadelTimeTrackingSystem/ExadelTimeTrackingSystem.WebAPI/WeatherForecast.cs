@@ -1,7 +1,7 @@
-using System;
-
 namespace ExadelTimeTrackingSystem.WebAPI
 {
+    using System;
+
     public class WeatherForecast
     {
         public DateTime Date { get; set; }
