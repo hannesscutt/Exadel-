@@ -38,5 +38,12 @@
             var projectDto = await _service.CreateAsync(project);
             return Created(string.Empty, projectDto);
         }
+
+        [HttpGet("Name")]
+        public async Task<ActionResult<List<string>>> GetNamesAsync()
+        {
+            var names = await _service.GetNamesAsync();
+            return Ok(names);
+        }
     }
 }

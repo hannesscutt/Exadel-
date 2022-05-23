@@ -1,9 +1,9 @@
 ﻿namespace ExadelTimeTrackingSystem.BusinessLogic.Mappings
 {
     using System;
-    using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using ExadelTimeTrackingSystem.Data.Models;
     using ExadelTimeTrackingSystem.Data.Models.Enums;
 
     public class TaskProfile : Profile

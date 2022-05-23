@@ -9,6 +9,7 @@
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<IProjectService, ProjectService>();
+            services.AddSingleton<ITaskService, TaskService>();
             return services;
         }
     }

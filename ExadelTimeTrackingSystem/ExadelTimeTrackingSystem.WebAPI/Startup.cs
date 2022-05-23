@@ -1,7 +1,6 @@
 namespace ExadelTimeTrackingSystem.WebAPI
 {
     using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
-    using ExadelTimeTrackingSystem.Data;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
@@ -13,6 +12,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
     using Microsoft.OpenApi.Models;
+    using MongoDB.Bson;
 
     public class Startup
     {
@@ -26,6 +26,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);

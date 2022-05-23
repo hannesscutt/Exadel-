@@ -12,5 +12,7 @@
         Task<ProjectDTO> GetByIdAsync(Guid id);
 
         Task<ProjectDTO> CreateAsync(CreateProjectDTO project);
+
+        Task<List<string>> GetNamesAsync();
     }
 }
