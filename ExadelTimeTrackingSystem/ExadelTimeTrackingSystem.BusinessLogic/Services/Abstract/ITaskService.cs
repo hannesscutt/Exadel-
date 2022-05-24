@@ -12,5 +12,7 @@
         Task<TaskDTO> GetByIdAsync(Guid id);
 
         Task<TaskDTO> CreateAsync(CreateTaskDTO task);
+
+        Task<List<TaskDTO>> GetTasksOnDateAsync(DateTime date);
     }
 }

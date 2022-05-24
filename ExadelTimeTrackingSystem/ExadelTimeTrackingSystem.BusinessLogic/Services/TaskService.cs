@@ -38,5 +38,11 @@
             var task = await _repository.GetByIdAsync(id);
             return _mapper.Map<TaskDTO>(task);
         }
+
+        public async Task<List<TaskDTO>> GetTasksOnDateAsync(DateTime date)
+        {
+            var tasks = await _repository.GetTasksOnDateAsync(date);
+            return _mapper.Map<List<TaskDTO>>(tasks);
+        }
     }
 }

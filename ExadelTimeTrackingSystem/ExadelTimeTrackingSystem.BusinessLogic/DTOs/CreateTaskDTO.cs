@@ -10,6 +10,8 @@
 
         public string Activity { get; set; }
 
+        public string Description { get; set; }
+
         public Guid ApproverId { get; set; }
 
         public DateTime Date { get; set; }

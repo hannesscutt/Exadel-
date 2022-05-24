@@ -39,11 +39,19 @@
             return Created(string.Empty, projectDto);
         }
 
-        [HttpGet("Name")]
+        [HttpGet("names")]
         public async Task<ActionResult<List<string>>> GetNamesAsync()
         {
             var names = await _service.GetNamesAsync();
             return Ok(names);
+        }
+
+        [HttpGet("{id:guid}/activities")]
+
+        public async Task<ActionResult<string[]>> GetProjectActivitiesAsync([FromRoute] Guid id)
+        {
+            var activities = await _service.GetProjectActivitiesAsync(id);
+            return activities == null ? NotFound() : Ok(activities);
         }
     }
 }

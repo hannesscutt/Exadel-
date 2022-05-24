@@ -10,13 +10,9 @@
 
     public class ProjectRepository : MongoRepository<Project>, IProjectRepository
     {
-        private readonly IMongoDatabase _database;
-
         public ProjectRepository(IMongoDbSettings settings)
             : base(settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            _database = client.GetDatabase(new MongoUrlBuilder(settings.ConnectionString).DatabaseName);
         }
 
         public Task<List<string>> GetNamesAsync()
@@ -24,18 +20,14 @@
             var filterBuilder = Builders<Project>.Filter;
             var list = new List<string>();
             var filter = filterBuilder.Empty;
-            var collection = GetCollection<Project>().Find(filter).ToListAsync();
-            foreach (var project in collection.Result)
-            {
-                list.Add(project.Name);
-            }
-
-            return System.Threading.Tasks.Task.FromResult(list);
+            return GetCollection<Project>().Find(filter).Project(p => p.Name).ToListAsync();
         }
 
-        private IMongoCollection<Project> GetCollection<TProject2>()
+        public Task<string[]> GetProjectActivitiesAsync(Guid id)
         {
-            return _database.GetCollection<Project>(typeof(TProject2).Name);
+            var filterBuilder = Builders<Project>.Filter;
+            var filter = filterBuilder.Eq(d => d.Id, id);
+            return System.Threading.Tasks.Task.FromResult(GetCollection<Project>().Find(filter).Project(p => p.Activities).SingleOrDefault());
         }
     }
 }

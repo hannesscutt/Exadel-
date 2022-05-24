@@ -38,5 +38,13 @@
             var taskDto = await _service.CreateAsync(task);
             return Created(string.Empty, taskDto);
         }
+
+        [HttpGet("{date:datetime}")]
+
+        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromRoute] DateTime date)
+        {
+            var tasks = await _service.GetTasksOnDateAsync(date);
+            return tasks.Count < 1 ? NotFound() : Ok(tasks);
+        }
     }
 }
