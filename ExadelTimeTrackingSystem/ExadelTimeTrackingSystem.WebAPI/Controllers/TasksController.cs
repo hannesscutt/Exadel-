@@ -39,12 +39,12 @@
             return Created(string.Empty, taskDto);
         }
 
-        [HttpGet("date:datetime")]
+        [HttpGet("date")]
 
         public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery] DateTime date)
         {
             var tasks = await _service.GetTasksOnDateAsync(date);
-            return tasks.Count < 1 ? NotFound() : Ok(tasks);
+            return Ok(tasks);
         }
     }
 }
