@@ -17,5 +17,7 @@
         Task<List<TaskDTO>> GetTasksOnDateAsync(DateTime date);
 
         Task<DeleteResult> DeleteTaskAsync(Guid id);
+
+        Task<UpdateResult> UpdateTaskAsync(CreateTaskDTO task);
     }
 }

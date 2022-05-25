@@ -11,5 +11,7 @@
         Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date);
 
         Task<DeleteResult> DeleteTaskAsync(Guid id);
+
+        Task<UpdateResult> UpdateTaskAsync(Models.Task task);
     }
 }

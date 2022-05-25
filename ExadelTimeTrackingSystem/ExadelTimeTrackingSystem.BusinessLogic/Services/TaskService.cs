@@ -50,5 +50,11 @@
         {
             return await _repository.DeleteTaskAsync(id);
         }
+
+        public async Task<UpdateResult> UpdateTaskAsync(CreateTaskDTO taskDto)
+        {
+            var task = _mapper.Map<Data.Models.Task>(taskDto);
+            return await _repository.UpdateTaskAsync(task);
+        }
     }
 }

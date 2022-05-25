@@ -54,5 +54,12 @@
             var result = await _service.DeleteTaskAsync(id);
             return result.DeletedCount < 1 ? NotFound() : Ok(result);
         }
+
+        [HttpPut("{task}")]
+        public async Task<ActionResult<UpdateResult>> UpdateTaskAsync([FromRoute] CreateTaskDTO task)
+        {
+            var result = await _service.UpdateTaskAsync(task);
+            return result.ModifiedCount < 1 ? NotFound() : Ok(result);
+        }
     }
 }
