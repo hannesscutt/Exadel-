@@ -8,5 +8,7 @@
     public interface ITaskRepository : IMongoRepository<Models.Task>
     {
         Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date);
+
+        Task<Models.Task> DeleteTask(Guid id);
     }
 }

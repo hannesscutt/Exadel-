@@ -44,5 +44,11 @@
             var tasks = await _repository.GetTasksOnDateAsync(date);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
+
+        public async Task<TaskDTO> DeleteTask(Guid id)
+        {
+            var task = await _repository.DeleteTask(id);
+            return _mapper.Map<TaskDTO>(task);
+        }
     }
 }
