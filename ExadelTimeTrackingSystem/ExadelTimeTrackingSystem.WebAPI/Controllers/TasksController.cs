@@ -40,12 +40,12 @@
             return Created(string.Empty, taskDto);
         }
 
-        [HttpGet("date:datetime")]
+        [HttpGet("date")]
 
         public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery] DateTime date)
         {
             var tasks = await _service.GetTasksOnDateAsync(date);
-            return tasks.Count < 1 ? NotFound() : Ok(tasks);
+            return Ok(tasks);
         }
 
         [HttpDelete("{id:guid}")]
@@ -55,8 +55,8 @@
             return result.DeletedCount < 1 ? NotFound() : Ok(result);
         }
 
-        [HttpPut("{task}")]
-        public async Task<ActionResult<UpdateResult>> UpdateTaskAsync([FromRoute] CreateTaskDTO task)
+        [HttpPut]
+        public async Task<ActionResult<UpdateResult>> UpdateTaskAsync([FromBody] CreateTaskDTO task)
         {
             var result = await _service.UpdateTaskAsync(task);
             return result.ModifiedCount < 1 ? NotFound() : Ok(result);
