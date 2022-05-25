@@ -46,9 +46,9 @@
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
-        public async Task<DeleteResult> DeleteTaskAsync(Guid id)
+        public Task<DeleteResult> DeleteTaskAsync(Guid id)
         {
-            return await _repository.DeleteTaskAsync(id);
+            return _repository.DeleteTaskAsync(id);
         }
 
         public async Task<UpdateResult> UpdateTaskAsync(CreateTaskDTO taskDto)

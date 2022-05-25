@@ -48,13 +48,6 @@
             return Ok(tasks);
         }
 
-        [HttpDelete("{id:guid}")]
-        public async Task<ActionResult<DeleteResult>> DeleteTaskAsync([FromRoute] Guid id)
-        {
-            var result = await _service.DeleteTaskAsync(id);
-            return result.DeletedCount < 1 ? NotFound() : Ok(result);
-        }
-
         [HttpPut]
         public async Task<ActionResult<UpdateResult>> UpdateTaskAsync([FromBody] CreateTaskDTO task)
         {

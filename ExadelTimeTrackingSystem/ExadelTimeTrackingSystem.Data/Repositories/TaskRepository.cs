@@ -35,16 +35,16 @@
             var filter = filterBuilder.Eq(d => d.Id, task.Id);
             var updateFilter = Builders<Models.Task>.Update
                 .Set(d => d, task);
-                /*
-                .Set(d => d.HoursSpent, task.HoursSpent)
-                .Set(d => d.Status, task.Status)
-                .Set(d => d.Activity, task.Activity)
-                .Set(d => d.Description, task.Description)
-                .Set(d => d.ApproverId, task.ApproverId)
-                .Set(d => d.EmployeeId, task.EmployeeId)
-                .Set(d => d.IsOvertime, task.IsOvertime)
-                .Set(d => d.ProjectName, task.ProjectName);
-                */
+            /*
+            .Set(d => d.HoursSpent, task.HoursSpent)
+            .Set(d => d.Status, task.Status)
+            .Set(d => d.Activity, task.Activity)
+            .Set(d => d.Description, task.Description)
+            .Set(d => d.ApproverId, task.ApproverId)
+            .Set(d => d.EmployeeId, task.EmployeeId)
+            .Set(d => d.IsOvertime, task.IsOvertime)
+            .Set(d => d.ProjectName, task.ProjectName);
+            */
             return GetCollection<Models.Task>().UpdateOneAsync(filter, updateFilter);
         }
     }
