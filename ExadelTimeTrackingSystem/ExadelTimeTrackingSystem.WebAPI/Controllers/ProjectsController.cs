@@ -48,9 +48,9 @@
 
         [HttpGet("{id:guid}/activities")]
 
-        public async Task<ActionResult<string[]>> GetProjectActivitiesAsync([FromRoute] Guid id)
+        public async Task<ActionResult<List<string>>> GetActivitiesAsync([FromRoute] Guid id)
         {
-            var activities = await _service.GetProjectActivitiesAsync(id);
+            var activities = await _service.GetActivitiesAsync(id);
             return activities == null ? NotFound() : Ok(activities);
         }
     }

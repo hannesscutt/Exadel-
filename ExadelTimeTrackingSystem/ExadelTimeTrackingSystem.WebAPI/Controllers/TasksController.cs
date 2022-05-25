@@ -39,9 +39,9 @@
             return Created(string.Empty, taskDto);
         }
 
-        [HttpGet("{date:datetime}")]
+        [HttpGet("date:datetime")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromRoute] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery] DateTime date)
         {
             var tasks = await _service.GetTasksOnDateAsync(date);
             return tasks.Count < 1 ? NotFound() : Ok(tasks);

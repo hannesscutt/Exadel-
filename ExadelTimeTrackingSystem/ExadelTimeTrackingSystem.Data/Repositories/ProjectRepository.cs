@@ -18,16 +18,15 @@
         public Task<List<string>> GetNamesAsync()
         {
             var filterBuilder = Builders<Project>.Filter;
-            var list = new List<string>();
             var filter = filterBuilder.Empty;
             return GetCollection<Project>().Find(filter).Project(p => p.Name).ToListAsync();
         }
 
-        public Task<string[]> GetProjectActivitiesAsync(Guid id)
+        public Task<List<string>> GetActivitiesAsync(Guid id)
         {
             var filterBuilder = Builders<Project>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
-            return System.Threading.Tasks.Task.FromResult(GetCollection<Project>().Find(filter).Project(p => p.Activities).SingleOrDefault());
+            return GetCollection<Project>().Find(filter).Project(p => p.Activities).SingleOrDefaultAsync();
         }
     }
 }

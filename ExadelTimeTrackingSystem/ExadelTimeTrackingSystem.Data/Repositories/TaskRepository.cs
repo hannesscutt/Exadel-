@@ -18,7 +18,7 @@
         public Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
-            var filter = filterBuilder.Eq(d => d.Date, date);
+            var filter = filterBuilder.Eq(d => d.DateTime, date.Date);
             return GetCollection<Models.Task>().Find(filter).ToListAsync();
         }
     }

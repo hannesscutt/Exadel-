@@ -14,7 +14,7 @@
 
         public Guid ApproverId { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime DateTime { get; set; }
 
         public Guid EmployeeId { get; set; }
 
