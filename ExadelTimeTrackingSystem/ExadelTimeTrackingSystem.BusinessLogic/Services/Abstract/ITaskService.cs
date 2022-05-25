@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using MongoDB.Driver;
 
     public interface ITaskService
     {
@@ -14,5 +15,7 @@
         Task<TaskDTO> CreateAsync(CreateTaskDTO task);
 
         Task<List<TaskDTO>> GetTasksOnDateAsync(DateTime date);
+
+        Task<DeleteResult> DeleteTaskAsync(Guid id);
     }
 }

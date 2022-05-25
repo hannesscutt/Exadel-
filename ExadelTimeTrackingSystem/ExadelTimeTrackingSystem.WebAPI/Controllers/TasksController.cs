@@ -6,6 +6,7 @@
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using Microsoft.AspNetCore.Mvc;
+    using MongoDB.Driver;
 
     [ApiController]
     [Route("[controller]")]
@@ -45,6 +46,13 @@
         {
             var tasks = await _service.GetTasksOnDateAsync(date);
             return tasks.Count < 1 ? NotFound() : Ok(tasks);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<DeleteResult>> DeleteTaskAsync([FromRoute] Guid id)
+        {
+            var result = await _service.DeleteTaskAsync(id);
+            return result.DeletedCount < 1 ? NotFound() : Ok(result);
         }
     }
 }

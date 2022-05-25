@@ -14,8 +14,7 @@
             CreateMap<Status, StatusDTO>()
                 .ReverseMap();
             var map = CreateMap<CreateTaskDTO, Task>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
-            map
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.DateTime.Date));
         }
     }

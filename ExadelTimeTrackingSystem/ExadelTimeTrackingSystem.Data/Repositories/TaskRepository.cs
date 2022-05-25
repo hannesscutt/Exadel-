@@ -22,11 +22,12 @@
             return GetCollection<Models.Task>().Find(filter).ToListAsync();
         }
 
-        public Task<Models.Task> DeleteTask(Guid id)
+        public Task<DeleteResult> DeleteTaskAsync(Guid id)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
-            return GetCollection<Models.Task>().Find(filter).SingleOrDefaultAsync();
+            var db = GetCollection<Models.Task>();
+            return db.DeleteOneAsync(filter);
         }
     }
 }

@@ -8,6 +8,7 @@
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using ExadelTimeTrackingSystem.Data.Models;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
+    using MongoDB.Driver;
 
     public class TaskService : ITaskService
     {
@@ -45,10 +46,9 @@
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
-        public async Task<TaskDTO> DeleteTask(Guid id)
+        public async Task<DeleteResult> DeleteTaskAsync(Guid id)
         {
-            var task = await _repository.DeleteTask(id);
-            return _mapper.Map<TaskDTO>(task);
+            return await _repository.DeleteTaskAsync(id);
         }
     }
 }
