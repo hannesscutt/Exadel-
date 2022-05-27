@@ -38,5 +38,15 @@
             var project = await _repository.GetByIdAsync(id);
             return _mapper.Map<ProjectDTO>(project);
         }
+
+        public Task<List<string>> GetNamesAsync()
+        {
+            return _repository.GetNamesAsync();
+        }
+
+        public Task<List<string>> GetActivitiesAsync(Guid id)
+        {
+            return _repository.GetActivitiesAsync(id);
+        }
     }
 }

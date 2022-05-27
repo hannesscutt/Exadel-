@@ -38,7 +38,7 @@
             return GetCollection<TDocument>().InsertOneAsync(document);
         }
 
-        private IMongoCollection<TDocument> GetCollection<TDocument2>()
+        protected IMongoCollection<TDocument> GetCollection<TDocument2>()
         {
             return _database.GetCollection<TDocument>(typeof(TDocument2).Name);
         }

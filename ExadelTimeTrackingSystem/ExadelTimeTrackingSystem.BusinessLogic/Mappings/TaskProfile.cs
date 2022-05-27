@@ -1,9 +1,9 @@
 ﻿namespace ExadelTimeTrackingSystem.BusinessLogic.Mappings
 {
     using System;
-    using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using ExadelTimeTrackingSystem.Data.Models;
     using ExadelTimeTrackingSystem.Data.Models.Enums;
 
     public class TaskProfile : Profile
@@ -14,7 +14,8 @@
             CreateMap<Status, StatusDTO>()
                 .ReverseMap();
             CreateMap<CreateTaskDTO, Task>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.Date));
         }
     }
 }

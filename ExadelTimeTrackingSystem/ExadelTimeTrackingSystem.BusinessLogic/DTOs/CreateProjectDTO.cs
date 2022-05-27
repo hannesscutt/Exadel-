@@ -1,10 +1,11 @@
 ﻿namespace ExadelTimeTrackingSystem.BusinessLogic.DTOs
 {
     using System;
+    using System.Collections.Generic;
 
     public class CreateProjectDTO
     {
-        public string[] Activities { get; set; }
+        public List<string> Activities { get; set; }
 
         public string Name { get; set; }
 

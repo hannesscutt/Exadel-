@@ -9,6 +9,7 @@
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IProjectRepository, ProjectRepository>();
+            services.AddSingleton<ITaskRepository, TaskRepository>();
             return services;
         }
     }
