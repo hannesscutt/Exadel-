@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
@@ -39,9 +40,9 @@
             return Created(string.Empty, taskDto);
         }
 
-        [HttpGet("date")]
+        [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery, Required] DateTime date)
         {
             var tasks = await _service.GetTasksOnDateAsync(date);
             return Ok(tasks);
