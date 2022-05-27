@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
@@ -40,19 +41,35 @@
             return Created(string.Empty, taskDto);
         }
 
-        [HttpGet("date")]
+        [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery, Required] DateTime date)
         {
             var tasks = await _service.GetTasksOnDateAsync(date);
             return Ok(tasks);
         }
 
-        [HttpPut]
-        public async Task<ActionResult<UpdateResult>> UpdateTaskAsync([FromBody] CreateTaskDTO task)
+        [HttpDelete("{id:guid}")]
+
+        public async Task<ActionResult> DeleteTaskAsync([FromRoute] Guid id)
         {
-            var result = await _service.UpdateTaskAsync(task);
-            return result.ModifiedCount < 1 ? NotFound() : Ok(result);
+            await _service.DeleteTaskAsync(id);
+            return NoContent();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<TaskDTO>> UpdateTaskAsync([FromBody] TaskDTO task)
+        {
+            var taskDto = await _service.UpdateTaskAsync(task);
+            return Ok(taskDto);
+        }
+
+        [HttpPut("{date:datetime}, {projectid:guid}, {employeeid:guid}/approve")]
+
+        public async Task<ActionResult> ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId)
+        {
+           await _service.ApproveTasksAsync(date, projectId, employeeId);
+           return NoContent();
         }
     }
 }

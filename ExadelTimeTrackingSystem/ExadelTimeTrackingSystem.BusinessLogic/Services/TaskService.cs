@@ -46,15 +46,21 @@
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
-        public Task<DeleteResult> DeleteTaskAsync(Guid id)
+        public System.Threading.Tasks.Task DeleteTaskAsync(Guid id)
         {
             return _repository.DeleteTaskAsync(id);
         }
 
-        public async Task<UpdateResult> UpdateTaskAsync(CreateTaskDTO taskDto)
+        public async Task<TaskDTO> UpdateTaskAsync(TaskDTO taskDto)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
-            return await _repository.UpdateTaskAsync(task);
+            await _repository.UpdateTaskAsync(task);
+            return taskDto;
+        }
+
+        public System.Threading.Tasks.Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId)
+        {
+            return _repository.ApproveTasksAsync(date, projectId, employeeId);
         }
     }
 }

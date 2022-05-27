@@ -10,8 +10,10 @@
     {
         Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date);
 
-        Task<DeleteResult> DeleteTaskAsync(Guid id);
+        System.Threading.Tasks.Task DeleteTaskAsync(Guid id);
 
-        Task<UpdateResult> UpdateTaskAsync(Models.Task task);
+        System.Threading.Tasks.Task UpdateTaskAsync(Models.Task task);
+
+        System.Threading.Tasks.Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
     }
 }

@@ -22,30 +22,36 @@
             return GetCollection<Models.Task>().Find(filter).ToListAsync();
         }
 
-        public Task<DeleteResult> DeleteTaskAsync(Guid id)
+        public System.Threading.Tasks.Task DeleteTaskAsync(Guid id)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
             return GetCollection<Models.Task>().DeleteOneAsync(filter);
         }
 
-        public Task<UpdateResult> UpdateTaskAsync(Models.Task task)
+        public System.Threading.Tasks.Task UpdateTaskAsync(Models.Task task)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, task.Id);
-            var updateFilter = Builders<Models.Task>.Update
-                .Set(d => d, task);
+            return GetCollection<Models.Task>().ReplaceOneAsync(filter, task);
+        }
+
+        public System.Threading.Tasks.Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId)
+        {
+            var filterBuilder = Builders<Models.Task>.Filter;
+            var updateBuilder = Builders<Models.Task>.Update;
+            var dateFilter = filterBuilder.Eq(d => d.Date, date);
+            var projectFilter = filterBuilder.Eq(d => d.ProjectId, projectId);
+            var employeeFilter = filterBuilder.Eq(d => d.EmployeeId, employeeId);
+            var updateFilter = updateBuilder.Set(d => d.Status, Models.Enums.Status.Approved);
+            return System.Threading.Tasks.Task.FromResult(GetCollection<Models.Task>().UpdateMany(dateFilter & projectFilter & employeeFilter, updateFilter));
             /*
-            .Set(d => d.HoursSpent, task.HoursSpent)
-            .Set(d => d.Status, task.Status)
-            .Set(d => d.Activity, task.Activity)
-            .Set(d => d.Description, task.Description)
-            .Set(d => d.ApproverId, task.ApproverId)
-            .Set(d => d.EmployeeId, task.EmployeeId)
-            .Set(d => d.IsOvertime, task.IsOvertime)
-            .Set(d => d.ProjectName, task.ProjectName);
+            var list = GetCollection<Models.Task>().Find(dateFilter & projectFilter & employeeFilter).ToListAsync();
+            foreach (var task in list.Result)
+            {
+                task.Status = Models.Enums.Status.Approved;
+            }
             */
-            return GetCollection<Models.Task>().UpdateOneAsync(filter, updateFilter);
         }
     }
 }

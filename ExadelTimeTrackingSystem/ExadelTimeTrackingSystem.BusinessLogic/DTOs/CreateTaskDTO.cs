@@ -21,5 +21,7 @@
         public bool IsOvertime { get; set; }
 
         public string ProjectName { get; set; }
+
+        public Guid ProjectId { get; set; }
     }
 }
