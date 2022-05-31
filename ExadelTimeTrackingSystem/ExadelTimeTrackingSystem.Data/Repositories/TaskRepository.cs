@@ -44,14 +44,12 @@
             var projectFilter = filterBuilder.Eq(d => d.ProjectId, projectId);
             var employeeFilter = filterBuilder.Eq(d => d.EmployeeId, employeeId);
             var updateFilter = updateBuilder.Set(d => d.Status, Models.Enums.Status.Approved);
-            return System.Threading.Tasks.Task.FromResult(GetCollection<Models.Task>().UpdateMany(dateFilter & projectFilter & employeeFilter, updateFilter));
-            /*
-            var list = GetCollection<Models.Task>().Find(dateFilter & projectFilter & employeeFilter).ToListAsync();
-            foreach (var task in list.Result)
-            {
-                task.Status = Models.Enums.Status.Approved;
-            }
-            */
+            return GetCollection<Models.Task>().UpdateManyAsync(dateFilter & projectFilter & employeeFilter, updateFilter);
+        }
+
+        public System.Threading.Tasks.Task CreateBulkTasksAsync(List<Models.Task> tasks)
+        {
+           return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }
     }
 }

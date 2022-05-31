@@ -15,5 +15,7 @@
         System.Threading.Tasks.Task UpdateTaskAsync(Models.Task task);
 
         System.Threading.Tasks.Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
+
+        System.Threading.Tasks.Task CreateBulkTasksAsync(List<Models.Task> tasks);
     }
 }

@@ -16,6 +16,7 @@
             CreateMap<CreateTaskDTO, Task>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.Date));
+            //CreateMap<Task, BulkTaskDTO>();
         }
     }
 }

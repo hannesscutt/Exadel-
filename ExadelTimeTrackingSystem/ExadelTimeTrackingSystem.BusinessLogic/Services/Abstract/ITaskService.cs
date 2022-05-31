@@ -21,5 +21,7 @@
         Task<TaskDTO> UpdateTaskAsync(TaskDTO task);
 
         Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
+
+        Task<List<TaskDTO>> CreateBulkTasksAsync(List<TaskDTO> tasksDto);
     }
 }

@@ -62,5 +62,12 @@
         {
             return _repository.ApproveTasksAsync(date, projectId, employeeId);
         }
+
+        public async Task<List<TaskDTO>> CreateBulkTasksAsync(List<TaskDTO> tasksDto)
+        {
+            var tasks = _mapper.Map<List<Data.Models.Task>>(tasksDto);
+            await _repository.CreateBulkTasksAsync(tasks);
+            return tasksDto;
+        }
     }
 }

@@ -64,12 +64,20 @@
             return Ok(taskDto);
         }
 
-        [HttpPut("{date:datetime}, {projectid:guid}, {employeeid:guid}/approve")]
+        [HttpPut("approve")]
 
-        public async Task<ActionResult> ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId)
+        public async Task<ActionResult> ApproveTasksAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
         {
            await _service.ApproveTasksAsync(date, projectId, employeeId);
            return NoContent();
+        }
+
+        [HttpPost("bulk")]
+
+        public async Task<ActionResult<List<BulkTaskDTO>>> CreateBulkTasksAsync([FromBody] BulkTaskDTO tasks)
+        {
+            var tasksDto = await _service.CreateBulkTasksAsync(tasks.Tasks);
+            return Ok(tasksDto);
         }
     }
 }
