@@ -22,6 +22,6 @@
 
         Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
 
-        Task<List<TaskDTO>> CreateBulkTasksAsync(List<TaskDTO> tasksDto);
+        Task<List<CreateTaskDTO>> BulkCreateTasksDTOAsync(BulkTaskDTO bulkTask);
     }
 }

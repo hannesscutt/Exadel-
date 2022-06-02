@@ -47,7 +47,7 @@
             return GetCollection<Models.Task>().UpdateManyAsync(dateFilter & projectFilter & employeeFilter, updateFilter);
         }
 
-        public System.Threading.Tasks.Task CreateBulkTasksAsync(List<Models.Task> tasks)
+        public System.Threading.Tasks.Task BulkCreateTasksDTOAsync(List<Models.Task> tasks)
         {
            return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }

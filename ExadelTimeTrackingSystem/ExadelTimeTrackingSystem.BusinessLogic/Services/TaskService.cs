@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using ExadelTimeTrackingSystem.Data.Models;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
@@ -14,16 +15,19 @@
     {
         private readonly ITaskRepository _repository;
         private readonly IMapper _mapper;
+        private readonly IProjectService _projectService;
 
-        public TaskService(ITaskRepository repository, IMapper mapper)
+        public TaskService(ITaskRepository repository, IMapper mapper, IProjectService projectService)
         {
             _repository = repository;
+            _projectService = projectService;
             _mapper = mapper;
         }
 
         public async Task<TaskDTO> CreateAsync(CreateTaskDTO taskDto)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
+            task.ProjectName = _projectService.GetProjectNameAsync(task.ProjectId).Result;
             await _repository.InsertOneAsync(task);
             return _mapper.Map<TaskDTO>(task);
         }
@@ -63,11 +67,28 @@
             return _repository.ApproveTasksAsync(date, projectId, employeeId);
         }
 
-        public async Task<List<TaskDTO>> CreateBulkTasksAsync(List<TaskDTO> tasksDto)
+        public async Task<List<CreateTaskDTO>> BulkCreateTasksDTOAsync(BulkTaskDTO bulkTask)
         {
-            var tasks = _mapper.Map<List<Data.Models.Task>>(tasksDto);
-            await _repository.CreateBulkTasksAsync(tasks);
-            return tasksDto;
+            var list = new List<CreateTaskDTO>();
+            /*
+            var newTasks = tasks.Dates.Select(d => {
+                tasks.Task.Date = d;
+            });
+            */
+            foreach (var date in bulkTask.Dates)
+            {
+                bulkTask.Task.Date = date;
+                list.Add(CopyExtension.Copy(bulkTask.Task));
+            }
+
+            var tasks = _mapper.Map<List<Data.Models.Task>>(list);
+            foreach (var task in tasks)
+            {
+                task.ProjectName = _projectService.GetProjectNameAsync(task.ProjectId).Result;
+            }
+
+            await _repository.BulkCreateTasksDTOAsync(tasks);
+            return list;
         }
     }
 }

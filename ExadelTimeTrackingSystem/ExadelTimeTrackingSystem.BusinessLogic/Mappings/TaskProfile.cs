@@ -15,8 +15,9 @@
                 .ReverseMap();
             CreateMap<CreateTaskDTO, Task>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
-                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.Date));
-            //CreateMap<Task, BulkTaskDTO>();
+                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.Date))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Status.Pending))
+                .ForMember(dest => dest.ProjectName, opt => opt.Ignore());
         }
     }
 }

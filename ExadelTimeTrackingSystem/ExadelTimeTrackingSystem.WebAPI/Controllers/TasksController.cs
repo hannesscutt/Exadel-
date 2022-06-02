@@ -3,8 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using Microsoft.AspNetCore.Mvc;
     using MongoDB.Driver;
@@ -74,10 +76,10 @@
 
         [HttpPost("bulk")]
 
-        public async Task<ActionResult<List<BulkTaskDTO>>> CreateBulkTasksAsync([FromBody] BulkTaskDTO tasks)
+        public async Task<ActionResult<List<BulkTaskDTO>>> BulkCreateTasksDTOAsync([FromBody] BulkTaskDTO tasks)
         {
-            var tasksDto = await _service.CreateBulkTasksAsync(tasks.Tasks);
-            return Ok(tasksDto);
+            var tasksDto = await _service.BulkCreateTasksDTOAsync(tasks);
+            return Created(string.Empty, tasksDto);
         }
     }
 }

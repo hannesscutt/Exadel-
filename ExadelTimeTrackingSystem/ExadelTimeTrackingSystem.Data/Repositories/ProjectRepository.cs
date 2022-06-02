@@ -28,5 +28,12 @@
             var filter = filterBuilder.Eq(d => d.Id, id);
             return GetCollection<Project>().Find(filter).Project(p => p.Activities).SingleOrDefaultAsync();
         }
+
+        public Task<string> GetProjectNameAsync(Guid id)
+        {
+            var filterBuilder = Builders<Project>.Filter;
+            var filter = filterBuilder.Eq(d => d.Id, id);
+            return GetCollection<Project>().Find(filter).Project(p => p.Name).SingleOrDefaultAsync();
+        }
     }
 }
