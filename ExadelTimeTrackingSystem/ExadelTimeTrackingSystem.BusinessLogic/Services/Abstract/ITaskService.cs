@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
-    using MongoDB.Driver;
 
     public interface ITaskService
     {
@@ -22,6 +21,6 @@
 
         Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
 
-        Task<List<CreateTaskDTO>> BulkCreateTasksDTOAsync(BulkTaskDTO bulkTask);
+        Task<List<CreateTaskDTO>> BulkCreateTasksDTOAsync(CreateBulkTaskDTO bulkTask);
     }
 }
