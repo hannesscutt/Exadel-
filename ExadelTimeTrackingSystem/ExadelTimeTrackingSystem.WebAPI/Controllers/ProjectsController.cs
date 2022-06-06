@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.Data.Validators;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -35,8 +36,15 @@
         [HttpPost]
         public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] CreateProjectDTO project)
         {
-            var projectDto = await _service.CreateAsync(project);
-            return Created(string.Empty, projectDto);
+            var validator = new CreateProjectDTOValidator();
+            var result = validator.Validate(project);
+            if (result.IsValid)
+            {
+                var projectDto = await _service.CreateAsync(project);
+                return Created(string.Empty, projectDto);
+            }
+
+            return BadRequest(result.Errors);
         }
 
         [HttpGet("names")]
