@@ -25,7 +25,7 @@
         public async Task<TaskDTO> CreateAsync(CreateTaskDTO taskDto)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
-            task.ProjectName = _projectService.GetProjectNameAsync(task.ProjectId).Result;
+            task.ProjectName = _projectService.GetNameAsync(task.ProjectId).Result;
             await _repository.InsertOneAsync(task);
             return _mapper.Map<TaskDTO>(task);
         }
@@ -42,42 +42,42 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetTasksOnDateAsync(DateTime date)
+        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date)
         {
-            var tasks = await _repository.GetTasksOnDateAsync(date);
+            var tasks = await _repository.GetOnDateAsync(date);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
-        public Task DeleteTaskAsync(Guid id)
+        public Task DeleteAsync(Guid id)
         {
-            return _repository.DeleteTaskAsync(id);
+            return _repository.DeleteAsync(id);
         }
 
-        public async Task<TaskDTO> UpdateTaskAsync(TaskDTO taskDto)
+        public async Task<TaskDTO> UpdateAsync(TaskDTO taskDto)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
-            await _repository.UpdateTaskAsync(task);
+            await _repository.UpdateAsync(task);
             return taskDto;
         }
 
-        public Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId)
+        public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId)
         {
-            return _repository.ApproveTasksAsync(date, projectId, employeeId);
+            return _repository.ApproveAsync(date, projectId, employeeId);
         }
 
-        public async Task<List<CreateTaskDTO>> BulkCreateTasksDTOAsync(CreateBulkTaskDTO bulkTask)
+        public async Task<List<CreateTaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto)
         {
             var list = new List<CreateTaskDTO>();
-            var projectName = await _projectService.GetProjectNameAsync(bulkTask.Task.ProjectId);
-            var newTasks = bulkTask.Dates.Select(date =>
+            var projectName = await _projectService.GetNameAsync(bulkCreateTaskDto.Task.ProjectId);
+            var newTasks = bulkCreateTaskDto.Dates.Select(date =>
             {
-                var task = _mapper.Map<Data.Models.Task>(bulkTask.Task);
+                var task = _mapper.Map<Data.Models.Task>(bulkCreateTaskDto.Task);
                 task.Date = date;
                 task.ProjectName = projectName;
                 return task;
             });
 
-            await _repository.BulkCreateTasksDTOAsync(new List<Data.Models.Task>(newTasks));
+            await _repository.BulkCreateAsync(new List<Data.Models.Task>(newTasks));
             return list;
         }
     }

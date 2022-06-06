@@ -49,9 +49,9 @@
             return _repository.GetActivitiesAsync(id);
         }
 
-        public Task<string> GetProjectNameAsync(Guid id)
+        public Task<string> GetNameAsync(Guid id)
         {
-            return _repository.GetProjectNameAsync(id);
+            return _repository.GetNameAsync(id);
         }
     }
 }

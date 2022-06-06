@@ -6,14 +6,14 @@
 
     public interface ITaskRepository : IMongoRepository<Models.Task>
     {
-        Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date);
+        Task<List<Models.Task>> GetOnDateAsync(DateTime date);
 
-        Task DeleteTaskAsync(Guid id);
+        Task DeleteAsync(Guid id);
 
-        Task UpdateTaskAsync(Models.Task task);
+        Task UpdateAsync(Models.Task task);
 
-        Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
+        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId);
 
-        Task BulkCreateTasksDTOAsync(List<Models.Task> tasks);
+        Task BulkCreateAsync(List<Models.Task> tasks);
     }
 }

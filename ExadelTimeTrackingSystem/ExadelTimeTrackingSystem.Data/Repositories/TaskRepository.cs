@@ -14,39 +14,39 @@
         {
         }
 
-        public Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date)
+        public Task<List<Models.Task>> GetOnDateAsync(DateTime date)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(d => d.Date, date.Date);
             return GetCollection<Models.Task>().Find(filter).ToListAsync();
         }
 
-        public Task DeleteTaskAsync(Guid id)
+        public Task DeleteAsync(Guid id)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
-            var filter = filterBuilder.Eq(d => d.Id, id);
+            var filter = filterBuilder.Eq(t => t.Id, id);
             return GetCollection<Models.Task>().DeleteOneAsync(filter);
         }
 
-        public Task UpdateTaskAsync(Models.Task task)
+        public Task UpdateAsync(Models.Task task)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
-            var filter = filterBuilder.Eq(d => d.Id, task.Id);
+            var filter = filterBuilder.Eq(t => t.Id, task.Id);
             return GetCollection<Models.Task>().ReplaceOneAsync(filter, task);
         }
 
-        public Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId)
+        public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId)
         {
             var filterBuilder = Builders<Models.Task>.Filter;
             var updateBuilder = Builders<Models.Task>.Update;
-            var dateFilter = filterBuilder.Eq(d => d.Date, date);
-            var projectFilter = filterBuilder.Eq(d => d.ProjectId, projectId);
-            var employeeFilter = filterBuilder.Eq(d => d.EmployeeId, employeeId);
-            var updateFilter = updateBuilder.Set(d => d.Status, Models.Enums.Status.Approved);
+            var dateFilter = filterBuilder.Eq(t => t.Date, date);
+            var projectFilter = filterBuilder.Eq(t => t.ProjectId, projectId);
+            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
+            var updateFilter = updateBuilder.Set(t => t.Status, Models.Enums.Status.Approved);
             return GetCollection<Models.Task>().UpdateManyAsync(dateFilter & projectFilter & employeeFilter, updateFilter);
         }
 
-        public Task BulkCreateTasksDTOAsync(List<Models.Task> tasks)
+        public Task BulkCreateAsync(List<Models.Task> tasks)
         {
            return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }

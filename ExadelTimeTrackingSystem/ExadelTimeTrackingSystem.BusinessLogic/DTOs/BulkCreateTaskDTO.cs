@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public class CreateBulkTaskDTO
+    public class BulkCreateTaskDTO
     {
         public CreateTaskDTO Task { get; set; }
 

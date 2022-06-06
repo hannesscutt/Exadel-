@@ -11,6 +11,6 @@
 
         Task<List<string>> GetActivitiesAsync(Guid id);
 
-        Task<string> GetProjectNameAsync(Guid id);
+        Task<string> GetNameAsync(Guid id);
     }
 }

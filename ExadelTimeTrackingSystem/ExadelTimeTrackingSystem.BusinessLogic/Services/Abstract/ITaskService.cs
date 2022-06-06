@@ -13,14 +13,14 @@
 
         Task<TaskDTO> CreateAsync(CreateTaskDTO task);
 
-        Task<List<TaskDTO>> GetTasksOnDateAsync(DateTime date);
+        Task<List<TaskDTO>> GetOnDateAsync(DateTime date);
 
-        Task DeleteTaskAsync(Guid id);
+        Task DeleteAsync(Guid id);
 
-        Task<TaskDTO> UpdateTaskAsync(TaskDTO task);
+        Task<TaskDTO> UpdateAsync(TaskDTO task);
 
-        Task ApproveTasksAsync(DateTime date, Guid projectId, Guid employeeId);
+        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId);
 
-        Task<List<CreateTaskDTO>> BulkCreateTasksDTOAsync(CreateBulkTaskDTO bulkTask);
+        Task<List<CreateTaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkTask);
     }
 }

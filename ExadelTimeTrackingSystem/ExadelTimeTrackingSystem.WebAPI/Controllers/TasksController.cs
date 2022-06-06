@@ -42,40 +42,40 @@
 
         [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery, Required] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date)
         {
-            var tasks = await _service.GetTasksOnDateAsync(date);
+            var tasks = await _service.GetOnDateAsync(date);
             return Ok(tasks);
         }
 
         [HttpDelete("{id:guid}")]
 
-        public async Task<ActionResult> DeleteTaskAsync([FromRoute] Guid id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            await _service.DeleteTaskAsync(id);
+            await _service.DeleteAsync(id);
             return NoContent();
         }
 
         [HttpPut]
         public async Task<ActionResult<TaskDTO>> UpdateTaskAsync([FromBody] TaskDTO task)
         {
-            var taskDto = await _service.UpdateTaskAsync(task);
+            var taskDto = await _service.UpdateAsync(task);
             return Ok(taskDto);
         }
 
         [HttpPut("approve")]
 
-        public async Task<ActionResult> ApproveTasksAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
+        public async Task<ActionResult> ApproveAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
         {
-           await _service.ApproveTasksAsync(date, projectId, employeeId);
+           await _service.ApproveAsync(date, projectId, employeeId);
            return NoContent();
         }
 
         [HttpPost("bulk")]
 
-        public async Task<ActionResult<List<CreateBulkTaskDTO>>> BulkCreateTasksDTOAsync([FromBody] CreateBulkTaskDTO tasks)
+        public async Task<ActionResult<List<BulkCreateTaskDTO>>> BulkCreateAsync([FromBody] BulkCreateTaskDTO bulkCreateTasksDto)
         {
-            var tasksDto = await _service.BulkCreateTasksDTOAsync(tasks);
+            var tasksDto = await _service.BulkCreateAsync(bulkCreateTasksDto);
             return Created(string.Empty, tasksDto);
         }
     }
