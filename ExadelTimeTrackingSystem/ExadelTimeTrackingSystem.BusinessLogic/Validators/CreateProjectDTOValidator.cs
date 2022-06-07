@@ -21,6 +21,12 @@
 
             RuleForEach(p => p.EmployeeIds)
                 .NotEmpty();
+
+            RuleFor(p => p.Name)
+                .MaximumLength(50);
+
+            RuleForEach(p => p.Activities)
+                .MaximumLength(50);
         }
     }
 }
