@@ -7,9 +7,20 @@
     {
         public CreateProjectDTOValidator()
         {
-            RuleFor(p => p.Name).NotEmpty();
-            RuleFor(p => p.ApproverId).NotEmpty();
-            RuleFor(p => p.Activities).NotEmpty();
+            RuleFor(p => p.Name)
+                .NotEmpty();
+
+            RuleFor(p => p.ApproverId)
+                .NotEmpty();
+
+            RuleFor(p => p.Activities)
+                .NotEmpty();
+
+            RuleForEach(p => p.Activities)
+                .NotEmpty();
+
+            RuleForEach(p => p.EmployeeIds)
+                .NotEmpty();
         }
     }
 }

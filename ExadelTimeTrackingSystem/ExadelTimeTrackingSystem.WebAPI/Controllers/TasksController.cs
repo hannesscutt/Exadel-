@@ -73,9 +73,9 @@
 
         [HttpPost("bulk")]
 
-        public async Task<ActionResult<List<BulkCreateTaskDTO>>> BulkCreateAsync([FromBody] BulkCreateTaskDTO bulkCreateTasksDto)
+        public async Task<ActionResult<List<BulkCreateTaskDTO>>> BulkCreateAsync([FromBody] BulkCreateTaskDTO bulkCreateTaskDto)
         {
-            var tasksDto = await _service.BulkCreateAsync(bulkCreateTasksDto);
+            var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto);
             return Created(string.Empty, tasksDto);
         }
     }

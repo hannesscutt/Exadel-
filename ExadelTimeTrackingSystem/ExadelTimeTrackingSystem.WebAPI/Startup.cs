@@ -28,14 +28,17 @@ namespace ExadelTimeTrackingSystem.WebAPI
         {
             BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
-
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
                 serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
             services.AddRepositories();
             services.AddServices();
-            services.AddSingleton(MapperExtensions.Mapper);
             services.AddControllers();
+
+            services.AddSingleton(MapperExtensions.Mapper);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExadelTimeTrackingSystem.WebAPI", Version = "v1" });

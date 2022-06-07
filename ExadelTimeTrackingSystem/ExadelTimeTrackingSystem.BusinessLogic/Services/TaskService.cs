@@ -25,7 +25,7 @@
         public async Task<TaskDTO> CreateAsync(CreateTaskDTO taskDto)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
-            task.ProjectName = _projectService.GetNameAsync(task.ProjectId).Result;
+            task.ProjectName = await _projectService.GetNameAsync(task.ProjectId);
             await _repository.InsertOneAsync(task);
             return _mapper.Map<TaskDTO>(task);
         }
@@ -75,9 +75,9 @@
                 task.Date = date;
                 task.ProjectName = projectName;
                 return task;
-            });
+            }).ToList();
 
-            await _repository.BulkCreateAsync(new List<Data.Models.Task>(newTasks));
+            await _repository.BulkCreateAsync(newTasks);
             return list;
         }
     }
