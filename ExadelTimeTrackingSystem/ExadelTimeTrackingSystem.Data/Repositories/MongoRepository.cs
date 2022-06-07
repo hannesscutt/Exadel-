@@ -38,6 +38,28 @@
             return GetCollection<TDocument>().InsertOneAsync(document);
         }
 
+        public async Task<bool> ExistsAsync(List<Guid> idList)
+        {
+            var filterBuilder = Builders<TDocument>.Filter;
+            var emptyFilter = filterBuilder.Empty;
+            var count = await GetCollection<TDocument>().CountAsync(emptyFilter);
+            if (count < idList.Count)
+            {
+                return false;
+            }
+
+            foreach (var id in idList)
+            {
+                var idFilter = filterBuilder.Eq(d => d.Id, id);
+                if (await GetCollection<TDocument>().CountAsync(idFilter) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         protected IMongoCollection<TDocument> GetCollection<TDocument2>()
         {
             return _database.GetCollection<TDocument>(typeof(TDocument2).Name);
