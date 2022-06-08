@@ -3,10 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using ExadelTimeTrackingSystem.Data.Models;
 
     public interface ITaskRepository : IMongoRepository<Models.Task>
     {
-        Task<List<Models.Task>> GetTasksOnDateAsync(DateTime date);
+        Task<List<Models.Task>> GetOnDateAsync(DateTime date);
+
+        Task DeleteAsync(Guid id);
+
+        Task UpdateAsync(Models.Task task);
+
+        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId);
+
+        Task BulkCreateAsync(List<Models.Task> tasks);
     }
 }

@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.Data.Validators;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -35,8 +37,13 @@
         [HttpPost]
         public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] CreateProjectDTO project)
         {
-            var projectDto = await _service.CreateAsync(project);
-            return Created(string.Empty, projectDto);
+            if (ModelState.IsValid)
+            {
+                var projectDto = await _service.CreateAsync(project);
+                return Created(string.Empty, projectDto);
+            }
+
+            return BadRequest(ModelState);
         }
 
         [HttpGet("names")]

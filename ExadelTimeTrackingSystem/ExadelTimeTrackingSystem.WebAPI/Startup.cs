@@ -2,8 +2,10 @@ namespace ExadelTimeTrackingSystem.WebAPI
 {
     using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
+    using ExadelTimeTrackingSystem.Data.Validators;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
+    using FluentValidation.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Routing;
@@ -28,14 +30,19 @@ namespace ExadelTimeTrackingSystem.WebAPI
         {
             BsonDefaults.GuidRepresentation = GuidRepresentation.Standard;
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
-
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
                 serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
             services.AddRepositories();
             services.AddServices();
+            services.AddValidators();
+            services.AddControllers()
+                .AddFluentValidation();
+
             services.AddSingleton(MapperExtensions.Mapper);
-            services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExadelTimeTrackingSystem.WebAPI", Version = "v1" });

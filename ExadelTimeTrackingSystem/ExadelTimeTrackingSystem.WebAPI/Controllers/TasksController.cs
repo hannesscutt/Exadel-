@@ -42,10 +42,41 @@
 
         [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetTasksOnDateAsync([FromQuery, Required] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date)
         {
-            var tasks = await _service.GetTasksOnDateAsync(date);
+            var tasks = await _service.GetOnDateAsync(date);
             return Ok(tasks);
+        }
+
+        [HttpDelete("{id:guid}")]
+
+        public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
+        {
+            await _service.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<TaskDTO>> UpdateTaskAsync([FromBody] TaskDTO task)
+        {
+            var taskDto = await _service.UpdateAsync(task);
+            return Ok(taskDto);
+        }
+
+        [HttpPut("approve")]
+
+        public async Task<ActionResult> ApproveAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
+        {
+           await _service.ApproveAsync(date, projectId, employeeId);
+           return NoContent();
+        }
+
+        [HttpPost("bulk")]
+
+        public async Task<ActionResult<List<BulkCreateTaskDTO>>> BulkCreateAsync([FromBody] BulkCreateTaskDTO bulkCreateTaskDto)
+        {
+            var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto);
+            return Created(string.Empty, tasksDto);
         }
     }
 }
