@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
@@ -36,15 +37,16 @@
         [HttpPost]
         public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] CreateProjectDTO project)
         {
-            var validator = new CreateProjectDTOValidator();
-            var result = validator.Validate(project);
-            if (result.IsValid)
+            if (ModelState.IsValid)
             {
                 var projectDto = await _service.CreateAsync(project);
                 return Created(string.Empty, projectDto);
             }
 
-            return BadRequest(result.Errors);
+            var errors = ModelState.Select(x => x.Value.Errors)
+                .Where(y => y.Count > 0)
+                .ToList();
+            return null;
         }
 
         [HttpGet("names")]

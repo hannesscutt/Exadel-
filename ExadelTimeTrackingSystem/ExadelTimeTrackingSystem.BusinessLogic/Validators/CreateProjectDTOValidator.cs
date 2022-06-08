@@ -8,7 +8,7 @@
         public CreateProjectDTOValidator()
         {
             RuleFor(p => p.Name)
-                .NotEmpty();
+                .NotEmpty().MaximumLength(50);
 
             RuleFor(p => p.ApproverId)
                 .NotEmpty();
@@ -17,16 +17,10 @@
                 .NotEmpty();
 
             RuleForEach(p => p.Activities)
-                .NotEmpty();
+                .NotEmpty().MaximumLength(50);
 
             RuleForEach(p => p.EmployeeIds)
                 .NotEmpty();
-
-            RuleFor(p => p.Name)
-                .MaximumLength(50);
-
-            RuleForEach(p => p.Activities)
-                .MaximumLength(50);
         }
     }
 }

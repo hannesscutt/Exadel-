@@ -2,8 +2,10 @@ namespace ExadelTimeTrackingSystem.WebAPI
 {
     using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
+    using ExadelTimeTrackingSystem.Data.Validators;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
+    using FluentValidation.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Routing;
@@ -36,6 +38,8 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.AddRepositories();
             services.AddServices();
             services.AddControllers();
+            services.AddMvc()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateProjectDTOValidator>());
 
             services.AddSingleton(MapperExtensions.Mapper);
 
