@@ -13,5 +13,9 @@
         Task<TDocument> GetByIdAsync(Guid id);
 
         Task InsertOneAsync(TDocument document);
+
+        Task<bool> ListExistsAsync(List<Guid> ids);
+
+        Task<bool> ExistsAsync(Guid id);
     }
 }
