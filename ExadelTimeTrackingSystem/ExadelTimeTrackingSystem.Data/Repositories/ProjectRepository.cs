@@ -25,7 +25,7 @@
         public Task<List<string>> GetActivitiesAsync(Guid id)
         {
             var filterBuilder = Builders<Project>.Filter;
-            var filter = filterBuilder.Eq(p => p.Id, id);
+            var filter = filterBuilder.Eq(d => d.Id, id);
             return GetCollection<Project>().Find(filter).Project(p => p.Activities).SingleOrDefaultAsync();
         }
 
