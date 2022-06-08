@@ -50,7 +50,7 @@
         {
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
-            return await GetCollection<TDocument>().CountAsync(filter) != 0;
+            return await GetCollection<TDocument>().CountAsync(filter) > 0;
         }
 
         protected IMongoCollection<TDocument> GetCollection<TDocument2>()
