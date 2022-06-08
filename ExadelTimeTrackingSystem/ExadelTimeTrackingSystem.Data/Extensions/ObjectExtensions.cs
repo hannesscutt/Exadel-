@@ -1,4 +1,4 @@
-﻿namespace ExadelTimeTrackingSystem.BusinessLogic.Extensions
+﻿namespace ExadelTimeTrackingSystem.Data.Extensions
 {
     using System.Text.Json;
 

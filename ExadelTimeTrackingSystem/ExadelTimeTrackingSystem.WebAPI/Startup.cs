@@ -37,6 +37,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
 
             services.AddRepositories();
             services.AddServices();
+            services.AddValidators();
             services.AddControllers()
                 .AddFluentValidation();
 
