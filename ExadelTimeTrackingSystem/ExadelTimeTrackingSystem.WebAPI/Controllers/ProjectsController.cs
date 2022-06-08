@@ -43,10 +43,7 @@
                 return Created(string.Empty, projectDto);
             }
 
-            var errors = ModelState.Select(x => x.Value.Errors)
-                .Where(y => y.Count > 0)
-                .ToList();
-            return null;
+            return BadRequest(ModelState);
         }
 
         [HttpGet("names")]

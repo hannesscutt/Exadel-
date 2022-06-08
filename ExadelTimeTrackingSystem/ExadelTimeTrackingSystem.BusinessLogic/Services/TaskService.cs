@@ -65,9 +65,8 @@
             return _repository.ApproveAsync(date, projectId, employeeId);
         }
 
-        public async Task<List<CreateTaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto)
+        public async Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto)
         {
-            var list = new List<CreateTaskDTO>();
             var projectName = await _projectService.GetNameAsync(bulkCreateTaskDto.Task.ProjectId);
             var newTasks = bulkCreateTaskDto.Dates.Select(date =>
             {
@@ -78,7 +77,7 @@
             }).ToList();
 
             await _repository.BulkCreateAsync(newTasks);
-            return list;
+            return newTasks;
         }
     }
 }
