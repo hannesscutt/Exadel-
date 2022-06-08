@@ -77,7 +77,8 @@
             }).ToList();
 
             await _repository.BulkCreateAsync(newTasks);
-            return newTasks;
+
+            return _mapper.Map<List<TaskDTO>>(newTasks);
         }
     }
 }

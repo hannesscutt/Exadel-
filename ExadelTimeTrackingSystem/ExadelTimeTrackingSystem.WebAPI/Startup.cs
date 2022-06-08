@@ -37,9 +37,8 @@ namespace ExadelTimeTrackingSystem.WebAPI
 
             services.AddRepositories();
             services.AddServices();
-            services.AddControllers();
-            services.AddMvc()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateProjectDTOValidator>());
+            services.AddControllers()
+                .AddFluentValidation();
 
             services.AddSingleton(MapperExtensions.Mapper);
 
