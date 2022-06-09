@@ -7,25 +7,29 @@
 
     public class CreateProjectDTOValidator : AbstractValidator<CreateProjectDTO>
     {
-        private IUserService _service;
+        private readonly IUserService _service;
 
-        public void ConfigureProjectDTOValidator(IUserService service)
+        public CreateProjectDTOValidator(IUserService service)
         {
             _service = service;
-        }
 
-        public CreateProjectDTOValidator()
-        {
             RuleFor(p => p.Name)
                 .NotEmpty()
                 .MaximumLength(50);
 
             RuleFor(p => p.ApproverId)
                 .NotEmpty()
-                .MustAsync(async (id, cancellation) =>
+                .Must((model, cancellation) =>
                 {
-                    bool exists = await _service.ExistsAsync(id);
-                    return exists;
+                    foreach (var id in model.EmployeeIds)
+                    {
+                        if (_service.ExistsAsync(id).Result == false)
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
 
             RuleFor(p => p.Activities)
@@ -36,18 +40,25 @@
                 .MaximumLength(50);
 
             RuleFor(p => p.EmployeeIds)
-                .MustAsync(async (ids, cancellation) =>
+                .Must((model, cancellation) =>
                 {
-                    bool exists = await _service.ListExistsAsync(ids);
+                    bool exists = _service.ListExistsAsync(model.EmployeeIds).Result;
                     return exists;
                 });
 
             RuleForEach(p => p.EmployeeIds)
                 .NotEmpty()
-                .MustAsync(async (id, cancellation) =>
+                .Must((model, cancellation) =>
                 {
-                    bool exists = await _service.ExistsAsync(id);
-                    return exists;
+                    foreach (var id in model.EmployeeIds)
+                    {
+                        if (_service.ExistsAsync(id).Result == false)
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
                 });
         }
     }
