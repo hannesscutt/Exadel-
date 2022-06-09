@@ -1,10 +1,19 @@
 ﻿namespace ExadelTimeTrackingSystem.Data.Validators
 {
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using FluentValidation;
+    using System;
 
     public class CreateProjectDTOValidator : AbstractValidator<CreateProjectDTO>
     {
+        private IUserService _service;
+
+        public void ConfigureProjectDTOValidator(IUserService service)
+        {
+            _service = service;
+        }
+
         public CreateProjectDTOValidator()
         {
             RuleFor(p => p.Name)
@@ -12,7 +21,12 @@
                 .MaximumLength(50);
 
             RuleFor(p => p.ApproverId)
-                .NotEmpty();
+                .NotEmpty()
+                .MustAsync(async (id, cancellation) =>
+                {
+                    bool exists = await _service.ExistsAsync(id);
+                    return exists;
+                });
 
             RuleFor(p => p.Activities)
                 .NotEmpty();
@@ -21,8 +35,20 @@
                 .NotEmpty()
                 .MaximumLength(50);
 
+            RuleFor(p => p.EmployeeIds)
+                .MustAsync(async (ids, cancellation) =>
+                {
+                    bool exists = await _service.ListExistsAsync(ids);
+                    return exists;
+                });
+
             RuleForEach(p => p.EmployeeIds)
-                .NotEmpty();
+                .NotEmpty()
+                .MustAsync(async (id, cancellation) =>
+                {
+                    bool exists = await _service.ExistsAsync(id);
+                    return exists;
+                });
         }
     }
 }
