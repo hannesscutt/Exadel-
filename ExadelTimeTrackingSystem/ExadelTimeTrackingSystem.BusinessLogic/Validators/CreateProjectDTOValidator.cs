@@ -19,17 +19,10 @@
 
             RuleFor(p => p.ApproverId)
                 .NotEmpty()
-                .Must((model, cancellation) =>
+                .MustAsync(async (id, cancellation) =>
                 {
-                    foreach (var id in model.EmployeeIds)
-                    {
-                        if (_service.ExistsAsync(id).Result == false)
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
+                    bool exists = await _service.ExistsAsync(id);
+                    return exists;
                 });
 
             RuleFor(p => p.Activities)
@@ -40,25 +33,18 @@
                 .MaximumLength(50);
 
             RuleFor(p => p.EmployeeIds)
-                .Must((model, cancellation) =>
+                .MustAsync(async (ids, cancellation) =>
                 {
-                    bool exists = _service.ListExistsAsync(model.EmployeeIds).Result;
+                    bool exists = await _service.ListExistsAsync(ids);
                     return exists;
                 });
 
             RuleForEach(p => p.EmployeeIds)
                 .NotEmpty()
-                .Must((model, cancellation) =>
+                .MustAsync(async (id, cancellation) =>
                 {
-                    foreach (var id in model.EmployeeIds)
-                    {
-                        if (_service.ExistsAsync(id).Result == false)
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
+                    bool exists = await _service.ExistsAsync(id);
+                    return exists;
                 });
         }
     }
