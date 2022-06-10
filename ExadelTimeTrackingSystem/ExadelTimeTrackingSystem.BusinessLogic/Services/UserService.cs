@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
@@ -18,14 +19,14 @@
             _mapper = mapper;
         }
 
-        public Task<bool> ListExistsAsync(List<Guid> ids)
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken token)
         {
-            return _repository.ListExistsAsync(ids);
+            return _repository.ExistAsync(ids, token);
         }
 
-        public Task<bool> ExistsAsync(Guid id)
+        public Task<bool> ExistsAsync(Guid id, CancellationToken token)
         {
-            return _repository.ExistsAsync(id);
+            return _repository.ExistsAsync(id, token);
         }
     }
 }

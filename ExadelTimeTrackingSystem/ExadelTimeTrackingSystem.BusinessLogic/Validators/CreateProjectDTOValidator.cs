@@ -3,16 +3,19 @@
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using FluentValidation;
-    using System;
 
     public class CreateProjectDTOValidator : AbstractValidator<CreateProjectDTO>
     {
-        private readonly IUserService _service;
+        private readonly IUserService _userservice;
 
-        public CreateProjectDTOValidator(IUserService service)
+        public CreateProjectDTOValidator(IUserService userservice)
         {
-            _service = service;
+            _userservice = userservice;
+            this.ConfigureRules();
+        }
 
+        private void ConfigureRules()
+        {
             RuleFor(p => p.Name)
                 .NotEmpty()
                 .MaximumLength(50);
@@ -21,7 +24,7 @@
                 .NotEmpty()
                 .MustAsync(async (id, cancellation) =>
                 {
-                    bool exists = await _service.ExistsAsync(id);
+                    bool exists = await _userservice.ExistsAsync(id, cancellation);
                     return exists;
                 });
 
@@ -35,7 +38,7 @@
             RuleFor(p => p.EmployeeIds)
                 .MustAsync(async (ids, cancellation) =>
                 {
-                    bool exists = await _service.ListExistsAsync(ids);
+                    bool exists = await _userservice.ExistAsync(ids, cancellation);
                     return exists;
                 });
 
@@ -43,7 +46,7 @@
                 .NotEmpty()
                 .MustAsync(async (id, cancellation) =>
                 {
-                    bool exists = await _service.ExistsAsync(id);
+                    bool exists = await _userservice.ExistsAsync(id, cancellation);
                     return exists;
                 });
         }

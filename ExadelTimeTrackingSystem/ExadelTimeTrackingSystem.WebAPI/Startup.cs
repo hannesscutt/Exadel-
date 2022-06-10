@@ -5,6 +5,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
     using ExadelTimeTrackingSystem.Data.Validators;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
+    using ExadelTimeTrackingSystem.WebAPI.Filters;
     using FluentValidation.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -40,6 +41,10 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.AddValidators();
             services.AddControllers()
                 .AddFluentValidation();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<ModelValidationActionFilter>();
+            });
 
             services.AddSingleton(MapperExtensions.Mapper);
 

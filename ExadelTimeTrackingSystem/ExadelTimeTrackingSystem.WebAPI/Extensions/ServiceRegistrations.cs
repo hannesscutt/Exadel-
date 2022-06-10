@@ -11,6 +11,7 @@
             services.AddSingleton<IProjectService, ProjectService>();
             services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<IUserService, UserService>();
+
             return services;
         }
     }
