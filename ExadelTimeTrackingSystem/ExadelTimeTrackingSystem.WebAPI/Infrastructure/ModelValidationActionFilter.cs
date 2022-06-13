@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Threading.Tasks;
     using FluentValidation;
     using Microsoft.AspNetCore.Mvc;
@@ -30,7 +29,7 @@
 
             foreach (var (key, value) in context.ActionArguments)
             {
-                // skip null values
+                // Skip null values
                 if (value == null)
                 {
                     continue;
@@ -38,31 +37,27 @@
 
                 var validator = _validatorFactory.GetValidator(value.GetType());
 
-                // skip objects with no validators
+                // Skip objects with no validators
                 if (validator == null)
                 {
                     continue;
                 }
 
-                // validate
+                // Validate
                 var validationContext = new ValidationContext<object>(value);
                 var result = await validator.ValidateAsync(validationContext);
 
-                // var result = await validator.ValidateAsync(value);
+                // Var result = await validator.ValidateAsync(value);
 
-                // if it's valid, continue
+                // If it's valid, continue
                 if (result.IsValid)
                 {
                     continue;
                 }
 
-                // if there are errors, copy to the response dictonary
+                // If there are errors, copy to the response dictonary
                 var dict = new Dictionary<string, string>();
-
-                foreach (var e in result.Errors)
-                {
-                    dict[e.PropertyName] = e.ErrorMessage;
-                }
+                dict = result.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
 
                 allErrors.Add(key, dict);
             }
@@ -70,10 +65,6 @@
             if (allErrors.Any())
             {
                 context.Result = new BadRequestObjectResult(allErrors);
-
-                // Do anything you want here, if the validation failed.
-                // For example, you can set context.Result to a new BadRequestResult()
-                // or implement the Post-Request-Get pattern.
             }
             else
             {

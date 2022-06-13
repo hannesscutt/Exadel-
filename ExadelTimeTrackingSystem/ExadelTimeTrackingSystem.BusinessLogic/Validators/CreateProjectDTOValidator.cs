@@ -24,7 +24,7 @@
             RuleFor(p => p.ApproverId)
                 .NotEmpty()
                 .MustAsync(_userservice.ExistsAsync)
-                .WithMessage(ValidationConstants.ExistsError());
+                .WithMessage(Constants.Validation.APPROVER_ID_DOES_NOT_EXIST);
 
             RuleFor(p => p.Activities)
                 .NotEmpty();
@@ -36,7 +36,7 @@
             RuleFor(p => p.EmployeeIds)
                 .NotEmpty()
                 .MustAsync(_userservice.ExistAsync)
-                .WithMessage(ValidationConstants.ExistError());
+                .WithMessage(Constants.Validation.EMPLOYEE_IDS_DO_NOT_EXIST);
 
             RuleForEach(p => p.EmployeeIds)
                 .NotEmpty();
