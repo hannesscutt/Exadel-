@@ -2,15 +2,20 @@
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using FluentValidation;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
 
     public class ModelValidationActionFilter : IAsyncActionFilter
     {
         private readonly IValidatorFactory _validatorFactory;
 
-        public ModelValidationActionFilter(IValidatorFactory validatorFactory) => _validatorFactory = validatorFactory;
+        public ModelValidationActionFilter(IValidatorFactory validatorFactory)
+        {
+            _validatorFactory = validatorFactory;
+        }
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
@@ -64,6 +69,8 @@
 
             if (allErrors.Any())
             {
+                context.Result = new BadRequestObjectResult(allErrors);
+
                 // Do anything you want here, if the validation failed.
                 // For example, you can set context.Result to a new BadRequestResult()
                 // or implement the Post-Request-Get pattern.

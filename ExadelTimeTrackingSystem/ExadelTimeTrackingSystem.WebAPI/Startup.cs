@@ -39,13 +39,13 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.AddRepositories();
             services.AddServices();
             services.AddValidators();
-            services.AddControllers()
-                .AddFluentValidation();
-            services.AddControllersWithViews(options =>
+            services.AddControllers(options =>
             {
                 options.Filters.Add<ModelValidationActionFilter>();
-            });
+                options.ModelValidatorProviders.Clear();
+            })
 
+               .AddFluentValidation();
             services.AddSingleton(MapperExtensions.Mapper);
 
             services.AddSwaggerGen(c =>
