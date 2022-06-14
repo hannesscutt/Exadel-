@@ -1,4 +1,4 @@
-﻿namespace ExadelTimeTrackingSystem.WebAPI.Filters
+﻿namespace ExadelTimeTrackingSystem.WebAPI.Infrastructure
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -27,15 +27,15 @@
                 return;
             }
 
-            foreach (var (key, value) in context.ActionArguments)
+            foreach (var (actionArgumentKey, actionObject) in context.ActionArguments)
             {
                 // Skip null values
-                if (value == null)
+                if (actionObject == null)
                 {
                     continue;
                 }
 
-                var validator = _validatorFactory.GetValidator(value.GetType());
+                var validator = _validatorFactory.GetValidator(actionObject.GetType());
 
                 // Skip objects with no validators
                 if (validator == null)
@@ -44,10 +44,8 @@
                 }
 
                 // Validate
-                var validationContext = new ValidationContext<object>(value);
+                var validationContext = new ValidationContext<object>(actionObject);
                 var result = await validator.ValidateAsync(validationContext);
-
-                // Var result = await validator.ValidateAsync(value);
 
                 // If it's valid, continue
                 if (result.IsValid)
@@ -56,10 +54,9 @@
                 }
 
                 // If there are errors, copy to the response dictonary
-                var dict = new Dictionary<string, string>();
-                dict = result.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
+                var errorDictionary = result.Errors.ToDictionary(e => e.PropertyName, e => e.ErrorMessage);
 
-                allErrors.Add(key, dict);
+                allErrors.Add(actionArgumentKey, errorDictionary);
             }
 
             if (allErrors.Any())

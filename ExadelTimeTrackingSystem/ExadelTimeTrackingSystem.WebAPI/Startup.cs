@@ -4,7 +4,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
-    using ExadelTimeTrackingSystem.WebAPI.Filters;
+    using ExadelTimeTrackingSystem.WebAPI.Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Routing;

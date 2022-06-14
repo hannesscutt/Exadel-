@@ -1,8 +1,9 @@
 ﻿namespace ExadelTimeTrackingSystem.Data.Validators
 {
+    using ExadelTimeTrackingSystem.BusinessLogic.Constants;
+
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
-    using ExadelTimeTrackingSystem.Data.Constants;
     using FluentValidation;
 
     public class CreateProjectDTOValidator : AbstractValidator<CreateProjectDTO>

@@ -11,7 +11,7 @@
     {
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
-            services.AddTransient<IValidator<CreateProjectDTO>, CreateProjectDTOValidator>();
+            services.AddScoped<IValidator<CreateProjectDTO>, CreateProjectDTOValidator>();
             services.AddScoped<IValidatorFactory, ServiceProviderValidatorFactory>();
             return services;
         }

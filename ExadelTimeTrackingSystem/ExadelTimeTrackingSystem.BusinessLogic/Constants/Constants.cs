@@ -1,4 +1,4 @@
-﻿namespace ExadelTimeTrackingSystem.Data.Constants
+﻿namespace ExadelTimeTrackingSystem.BusinessLogic.Constants
 {
     public static class Constants
     {

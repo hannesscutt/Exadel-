@@ -6,7 +6,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile></DocumentationFile>
-    <NoWarn>1701;1702; SA0001; SA1600; SA1101; SA1309; SA1201; SA0001;</NoWarn>
+    <NoWarn>1701;1702; SA0001; SA1600; SA1101; SA1309; SA1201; SA0001; SA1310;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
