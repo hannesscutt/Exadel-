@@ -1,6 +1,6 @@
 ﻿namespace ExadelTimeTrackingSystem.Data.Validators
 {
-    using ExadelTimeTrackingSystem.BusinessLogic.Constants;
+    using ExadelTimeTrackingSystem.BusinessLogic;
 
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
