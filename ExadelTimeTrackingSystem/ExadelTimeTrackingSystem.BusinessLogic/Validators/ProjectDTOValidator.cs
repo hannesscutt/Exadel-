@@ -1,27 +1,29 @@
 ﻿namespace ExadelTimeTrackingSystem.Data.Validators
 {
+    using ExadelTimeTrackingSystem.BusinessLogic;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
+    using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using FluentValidation;
+    using static ExadelTimeTrackingSystem.BusinessLogic.Constants;
 
-    public class ProjectDTOValidator : AbstractValidator<ProjectDTO>
+    public class ProjectDTOValidator : AbstractProjectValidator<ProjectDTO>
     {
-        private readonly IUserService _userService;
-        private CreateProjectDTOValidator createProjectDtoValidator;
+        private readonly IProjectService _projectService;
 
-        public ProjectDTOValidator(IUserService userService)
+        public ProjectDTOValidator(IProjectService projectservice, IUserService userservice)
+            : base(userservice)
         {
-            _userService = userService;
-            createProjectDtoValidator = new CreateProjectDTOValidator(_userService);
-            createProjectDtoValidator.ConfigureRules();
+            _projectService = projectservice;
             ConfigureRules();
+            base.ConfigureRules();
         }
 
-        public void ConfigureRules()
+        public override void ConfigureRules()
         {
             RuleFor(p => p.Id)
                    .NotEmpty()
-                   .MustAsync(_userService.ExistAsync)
-                   .WithMessage(Constants.Validation.ID_DOES_NOT_EXIST);
+                   .MustAsync(_projectService.ExistsAsync)
+                   .WithMessage(Validation.ID_DOES_NOT_EXIST);
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
 
@@ -18,5 +19,9 @@
         Task<List<string>> GetActivitiesAsync(Guid id);
 
         Task<string> GetNameAsync(Guid id);
+
+        Task<bool> ExistAsync(List<Guid> ids, CancellationToken token);
+
+        Task<bool> ExistsAsync(Guid id, CancellationToken token);
     }
 }

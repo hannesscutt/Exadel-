@@ -12,6 +12,7 @@
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
             services.AddScoped<IValidator<CreateProjectDTO>, CreateProjectDTOValidator>();
+            services.AddScoped<IValidator<ProjectDTO>, ProjectDTOValidator>();
             services.AddScoped<IValidatorFactory, ServiceProviderValidatorFactory>();
             return services;
         }

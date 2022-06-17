@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
@@ -52,6 +53,16 @@
         public Task<string> GetNameAsync(Guid id)
         {
             return _repository.GetNameAsync(id);
+        }
+
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken token)
+        {
+            return _repository.ExistAsync(ids, token);
+        }
+
+        public Task<bool> ExistsAsync(Guid id, CancellationToken token)
+        {
+            return _repository.ExistsAsync(id, token);
         }
     }
 }

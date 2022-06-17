@@ -6,17 +6,18 @@
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using FluentValidation;
 
-    public class CreateProjectDTOValidator : AbstractValidator<CreateProjectDTO>
+    public abstract class AbstractProjectValidator<TProjectDTO> : AbstractValidator<ProjectDTO>
+        where TProjectDTO : ProjectDTO
     {
         private readonly IUserService _userservice;
 
-        public CreateProjectDTOValidator(IUserService userservice)
+        public AbstractProjectValidator(IUserService userservice)
         {
             _userservice = userservice;
             ConfigureRules();
         }
 
-        public void ConfigureRules()
+        public virtual void ConfigureRules()
         {
             RuleFor(p => p.Name)
                 .NotEmpty()
