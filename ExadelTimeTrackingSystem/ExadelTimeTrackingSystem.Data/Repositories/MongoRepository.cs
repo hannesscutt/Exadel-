@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.Data.Models.Abstract;
@@ -36,6 +37,21 @@
         public Task InsertOneAsync(TDocument document)
         {
             return GetCollection<TDocument>().InsertOneAsync(document);
+        }
+
+        public async Task<bool> ExistAsync(List<Guid> ids, CancellationToken token)
+        {
+            var filterBuilder = Builders<TDocument>.Filter;
+            var emptyFilter = filterBuilder.Empty;
+            var count = await GetCollection<TDocument>().CountAsync(emptyFilter);
+            return count == ids.Count;
+        }
+
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken token)
+        {
+            var filterBuilder = Builders<TDocument>.Filter;
+            var filter = filterBuilder.Eq(d => d.Id, id);
+            return await GetCollection<TDocument>().CountAsync(filter) > 0;
         }
 
         protected IMongoCollection<TDocument> GetCollection<TDocument2>()

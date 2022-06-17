@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702; SA1600; SA1101; SA1309; CS0618; SA0001;</NoWarn>
+    <NoWarn>1701;1702; SA1600; SA1101; SA1309; CS0618; SA0001; SA1310;</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

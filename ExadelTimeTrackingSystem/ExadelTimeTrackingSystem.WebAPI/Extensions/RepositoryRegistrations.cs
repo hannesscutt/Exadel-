@@ -10,6 +10,7 @@
         {
             services.AddSingleton<IProjectRepository, ProjectRepository>();
             services.AddSingleton<ITaskRepository, TaskRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
             return services;
         }
     }

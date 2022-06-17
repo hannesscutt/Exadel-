@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.Data.Models.Abstract;
 
@@ -13,5 +14,9 @@
         Task<TDocument> GetByIdAsync(Guid id);
 
         Task InsertOneAsync(TDocument document);
+
+        Task<bool> ExistAsync(List<Guid> ids, CancellationToken token);
+
+        Task<bool> ExistsAsync(Guid id, CancellationToken token);
     }
 }
