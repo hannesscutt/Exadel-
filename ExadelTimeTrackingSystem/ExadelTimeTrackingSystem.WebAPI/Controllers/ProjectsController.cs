@@ -37,13 +37,8 @@
         [HttpPost]
         public async Task<ActionResult<ProjectDTO>> CreateAsync([FromBody] CreateProjectDTO project)
         {
-            if (ModelState.IsValid)
-            {
                 var projectDto = await _service.CreateAsync(project);
                 return Created(string.Empty, projectDto);
-            }
-
-            return BadRequest(ModelState);
         }
 
         [HttpGet("names")]

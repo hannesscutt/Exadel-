@@ -67,8 +67,8 @@
 
         public async Task<ActionResult> ApproveAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
         {
-           await _service.ApproveAsync(date, projectId, employeeId);
-           return NoContent();
+            await _service.ApproveAsync(date, projectId, employeeId);
+            return NoContent();
         }
 
         [HttpPost("bulk")]

@@ -14,6 +14,6 @@
 
         public Guid ApproverId { get; set; }
 
-        public Guid[] EmployeeIds { get; set; }
+        public List<Guid> EmployeeIds { get; set; }
     }
 }
