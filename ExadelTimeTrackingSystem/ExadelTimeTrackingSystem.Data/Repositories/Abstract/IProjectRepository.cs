@@ -12,7 +12,5 @@
         Task<List<string>> GetActivitiesAsync(Guid id);
 
         Task<string> GetNameAsync(Guid id);
-
-        System.Threading.Tasks.Task UpdateAsync(Project project);
     }
 }

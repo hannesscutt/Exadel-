@@ -54,6 +54,13 @@
             return await GetCollection<TDocument>().CountAsync(filter) > 0;
         }
 
+        public Task UpdateAsync(TDocument document)
+        {
+            var filterBuilder = Builders<TDocument>.Filter;
+            var filter = filterBuilder.Eq(d => d.Id, document.Id);
+            return GetCollection<TDocument>().ReplaceOneAsync(filter, document);
+        }
+
         protected IMongoCollection<TDocument> GetCollection<TDocument2>()
         {
             return _database.GetCollection<TDocument>(typeof(TDocument2).Name);

@@ -35,12 +35,5 @@
             var filter = filterBuilder.Eq(p => p.Id, id);
             return GetCollection<Project>().Find(filter).Project(p => p.Name).SingleOrDefaultAsync();
         }
-
-        public System.Threading.Tasks.Task UpdateAsync(Project project)
-        {
-            var filterBuilder = Builders<Project>.Filter;
-            var filter = filterBuilder.Eq(p => p.Id, project.Id);
-            return GetCollection<Project>().ReplaceOneAsync(filter, project);
-        }
     }
 }

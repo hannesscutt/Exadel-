@@ -10,8 +10,6 @@
 
         Task DeleteAsync(Guid id);
 
-        Task UpdateAsync(Models.Task task);
-
         Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId);
 
         Task BulkCreateAsync(List<Models.Task> tasks);

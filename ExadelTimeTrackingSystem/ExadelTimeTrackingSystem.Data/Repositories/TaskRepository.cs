@@ -28,13 +28,6 @@
             return GetCollection<Models.Task>().DeleteOneAsync(filter);
         }
 
-        public Task UpdateAsync(Models.Task task)
-        {
-            var filterBuilder = Builders<Models.Task>.Filter;
-            var filter = filterBuilder.Eq(t => t.Id, task.Id);
-            return GetCollection<Models.Task>().ReplaceOneAsync(filter, task);
-        }
-
         public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId)
         {
             var filterBuilder = Builders<Models.Task>.Filter;

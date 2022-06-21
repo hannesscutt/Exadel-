@@ -22,7 +22,7 @@
             RuleFor(p => p.Id)
                    .NotEmpty()
                    .MustAsync(_projectService.ExistsAsync)
-                   .WithMessage(Validation.ID_DOES_NOT_EXIST);
+                   .WithMessage(Constants.Validation.ID_DOES_NOT_EXIST);
         }
     }
 }
