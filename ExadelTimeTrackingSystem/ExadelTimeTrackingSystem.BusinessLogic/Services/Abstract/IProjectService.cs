@@ -23,5 +23,7 @@
         Task<bool> ExistAsync(List<Guid> ids, CancellationToken token);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken token);
+
+        Task<ProjectDTO> UpdateAsync(ProjectDTO projectDto);
     }
 }

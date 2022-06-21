@@ -6,18 +6,18 @@
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using FluentValidation;
 
-    public abstract class AbstractProjectValidator<TProjectDTO> : AbstractValidator<ProjectDTO>
-        where TProjectDTO : ProjectDTO
+    public abstract class BaseProjectDTOValidator<TDTO> : AbstractValidator<TDTO>
+        where TDTO : CreateProjectDTO
     {
-        private readonly IUserService _userservice;
+        private readonly IUserService _userService;
 
-        public AbstractProjectValidator(IUserService userservice)
+        public BaseProjectDTOValidator(IUserService userService)
         {
-            _userservice = userservice;
+            _userService = userService;
             ConfigureRules();
         }
 
-        public virtual void ConfigureRules()
+        private void ConfigureRules()
         {
             RuleFor(p => p.Name)
                 .NotEmpty()
@@ -25,7 +25,7 @@
 
             RuleFor(p => p.ApproverId)
                 .NotEmpty()
-                .MustAsync(_userservice.ExistsAsync)
+                .MustAsync(_userService.ExistsAsync)
                 .WithMessage(Constants.Validation.APPROVER_ID_DOES_NOT_EXIST);
 
             RuleFor(p => p.Activities)
@@ -37,7 +37,7 @@
 
             RuleFor(p => p.EmployeeIds)
                 .NotEmpty()
-                .MustAsync(_userservice.ExistAsync)
+                .MustAsync(_userService.ExistAsync)
                 .WithMessage(Constants.Validation.EMPLOYEE_IDS_DO_NOT_EXIST);
 
             RuleForEach(p => p.EmployeeIds)

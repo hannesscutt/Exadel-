@@ -55,14 +55,21 @@
             return _repository.GetNameAsync(id);
         }
 
-        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken token)
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
         {
-            return _repository.ExistAsync(ids, token);
+            return _repository.ExistAsync(ids, cancellationToken);
         }
 
-        public Task<bool> ExistsAsync(Guid id, CancellationToken token)
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
         {
-            return _repository.ExistsAsync(id, token);
+            return _repository.ExistsAsync(id, cancellationToken);
+        }
+
+        public async Task<ProjectDTO> UpdateAsync(ProjectDTO projectDto)
+        {
+            var project = _mapper.Map<Project>(projectDto);
+            await _repository.UpdateAsync(project);
+            return projectDto;
         }
     }
 }

@@ -6,19 +6,18 @@
     using FluentValidation;
     using static ExadelTimeTrackingSystem.BusinessLogic.Constants;
 
-    public class ProjectDTOValidator : AbstractProjectValidator<ProjectDTO>
+    public class ProjectDTOValidator : BaseProjectDTOValidator<ProjectDTO>
     {
         private readonly IProjectService _projectService;
 
-        public ProjectDTOValidator(IProjectService projectservice, IUserService userservice)
-            : base(userservice)
+        public ProjectDTOValidator(IProjectService projectService, IUserService userService)
+            : base(userService)
         {
-            _projectService = projectservice;
+            _projectService = projectService;
             ConfigureRules();
-            base.ConfigureRules();
         }
 
-        public override void ConfigureRules()
+        private void ConfigureRules()
         {
             RuleFor(p => p.Id)
                    .NotEmpty()
