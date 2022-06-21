@@ -55,5 +55,12 @@
             var activities = await _service.GetActivitiesAsync(id);
             return activities == null ? NotFound() : Ok(activities);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<ProjectDTO>> UpdateProjectAsync([FromBody] ProjectDTO project)
+        {
+            var projectDto = await _service.UpdateAsync(project);
+            return Ok(projectDto);
+        }
     }
 }

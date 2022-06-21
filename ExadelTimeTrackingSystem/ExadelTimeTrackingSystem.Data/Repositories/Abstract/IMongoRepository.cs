@@ -18,5 +18,7 @@
         Task<bool> ExistAsync(List<Guid> ids, CancellationToken token);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken token);
+
+        Task UpdateAsync(TDocument document);
     }
 }

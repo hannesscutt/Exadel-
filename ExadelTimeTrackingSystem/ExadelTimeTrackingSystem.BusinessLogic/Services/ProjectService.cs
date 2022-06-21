@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
@@ -52,6 +53,23 @@
         public Task<string> GetNameAsync(Guid id)
         {
             return _repository.GetNameAsync(id);
+        }
+
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
+        {
+            return _repository.ExistAsync(ids, cancellationToken);
+        }
+
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+        {
+            return _repository.ExistsAsync(id, cancellationToken);
+        }
+
+        public async Task<ProjectDTO> UpdateAsync(ProjectDTO projectDto)
+        {
+            var project = _mapper.Map<Project>(projectDto);
+            await _repository.UpdateAsync(project);
+            return projectDto;
         }
     }
 }
