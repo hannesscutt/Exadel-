@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
@@ -22,52 +23,52 @@
             _mapper = mapper;
         }
 
-        public async Task<TaskDTO> CreateAsync(CreateTaskDTO taskDto)
+        public async Task<TaskDTO> CreateAsync(CreateTaskDTO taskDto, CancellationToken cancellationToken)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
-            task.ProjectName = await _projectService.GetNameAsync(task.ProjectId);
-            await _repository.InsertOneAsync(task);
+            task.ProjectName = await _projectService.GetNameAsync(task.ProjectId, cancellationToken);
+            await _repository.InsertOneAsync(task, cancellationToken);
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetAllAsync()
+        public async Task<List<TaskDTO>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var tasks = await _repository.GetAllAsync();
+            var tasks = await _repository.GetAllAsync(cancellationToken);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
-        public async Task<TaskDTO> GetByIdAsync(Guid id)
+        public async Task<TaskDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var task = await _repository.GetByIdAsync(id);
+            var task = await _repository.GetByIdAsync(id, cancellationToken);
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date)
+        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken)
         {
-            var tasks = await _repository.GetOnDateAsync(date);
+            var tasks = await _repository.GetOnDateAsync(date, cancellationToken);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
-        public Task DeleteAsync(Guid id)
+        public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            return _repository.DeleteAsync(id);
+            return _repository.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<TaskDTO> UpdateAsync(TaskDTO taskDto)
+        public async Task<TaskDTO> UpdateAsync(TaskDTO taskDto, CancellationToken cancellationToken)
         {
             var task = _mapper.Map<Data.Models.Task>(taskDto);
-            await _repository.UpdateAsync(task);
+            await _repository.UpdateAsync(task, cancellationToken);
             return taskDto;
         }
 
-        public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId)
+        public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken)
         {
-            return _repository.ApproveAsync(date, projectId, employeeId);
+            return _repository.ApproveAsync(date, projectId, employeeId, cancellationToken);
         }
 
-        public async Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto)
+        public async Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken cancellationToken)
         {
-            var projectName = await _projectService.GetNameAsync(bulkCreateTaskDto.Task.ProjectId);
+            var projectName = await _projectService.GetNameAsync(bulkCreateTaskDto.Task.ProjectId, cancellationToken);
             var newTasks = bulkCreateTaskDto.Dates.Select(date =>
             {
                 var task = _mapper.Map<Data.Models.Task>(bulkCreateTaskDto.Task);
@@ -76,7 +77,7 @@
                 return task;
             }).ToList();
 
-            await _repository.BulkCreateAsync(newTasks);
+            await _repository.BulkCreateAsync(newTasks, cancellationToken);
 
             return _mapper.Map<List<TaskDTO>>(newTasks);
         }

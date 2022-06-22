@@ -3,9 +3,11 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.WebAPI.Infrastructure;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -22,21 +24,24 @@
         [HttpGet]
         public async Task<ActionResult<List<TaskDTO>>> GetAllAsync()
         {
-            var tasks = await _service.GetAllAsync();
+            var token = ConfigureCancellationToken.Configure();
+            var tasks = await _service.GetAllAsync(token);
             return Ok(tasks);
         }
 
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<TaskDTO>> GetByIdAsync([FromRoute] Guid id)
         {
-            var task = await _service.GetByIdAsync(id);
+            var token = ConfigureCancellationToken.Configure();
+            var task = await _service.GetByIdAsync(id, token);
             return task == null ? NotFound() : Ok(task);
         }
 
         [HttpPost]
         public async Task<ActionResult<TaskDTO>> CreateAsync([FromBody] CreateTaskDTO task)
         {
-            var taskDto = await _service.CreateAsync(task);
+            var token = ConfigureCancellationToken.Configure();
+            var taskDto = await _service.CreateAsync(task, token);
             return Created(string.Empty, taskDto);
         }
 
@@ -44,7 +49,8 @@
 
         public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date)
         {
-            var tasks = await _service.GetOnDateAsync(date);
+            var token = ConfigureCancellationToken.Configure();
+            var tasks = await _service.GetOnDateAsync(date, token);
             return Ok(tasks);
         }
 
@@ -52,14 +58,16 @@
 
         public async Task<ActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            await _service.DeleteAsync(id);
+            var token = ConfigureCancellationToken.Configure();
+            await _service.DeleteAsync(id, token);
             return NoContent();
         }
 
         [HttpPut]
         public async Task<ActionResult<TaskDTO>> UpdateTaskAsync([FromBody] TaskDTO task)
         {
-            var taskDto = await _service.UpdateAsync(task);
+            var token = ConfigureCancellationToken.Configure();
+            var taskDto = await _service.UpdateAsync(task, token);
             return Ok(taskDto);
         }
 
@@ -67,7 +75,8 @@
 
         public async Task<ActionResult> ApproveAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
         {
-            await _service.ApproveAsync(date, projectId, employeeId);
+            var token = ConfigureCancellationToken.Configure();
+            await _service.ApproveAsync(date, projectId, employeeId, token);
             return NoContent();
         }
 
@@ -75,7 +84,8 @@
 
         public async Task<ActionResult<List<BulkCreateTaskDTO>>> BulkCreateAsync([FromBody] BulkCreateTaskDTO bulkCreateTaskDto)
         {
-            var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto);
+            var token = ConfigureCancellationToken.Configure();
+            var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto, token);
             return Created(string.Empty, tasksDto);
         }
     }

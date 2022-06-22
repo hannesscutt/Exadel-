@@ -9,16 +9,16 @@
     public interface IMongoRepository<TDocument>
         where TDocument : IDocument
     {
-        Task<List<TDocument>> GetAllAsync();
+        Task<List<TDocument>> GetAllAsync(CancellationToken cancellationToken);
 
-        Task<TDocument> GetByIdAsync(Guid id);
+        Task<TDocument> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-        Task InsertOneAsync(TDocument document);
+        Task InsertOneAsync(TDocument document, CancellationToken cancellationToken);
 
-        Task<bool> ExistAsync(List<Guid> ids, CancellationToken token);
+        Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken);
 
-        Task<bool> ExistsAsync(Guid id, CancellationToken token);
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
 
-        Task UpdateAsync(TDocument document);
+        Task UpdateAsync(TDocument document, CancellationToken cancellationToken);
     }
 }

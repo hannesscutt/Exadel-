@@ -20,26 +20,26 @@
             _database = client.GetDatabase(new MongoUrlBuilder(settings.ConnectionString).DatabaseName);
         }
 
-        public Task<List<TDocument>> GetAllAsync()
+        public Task<List<TDocument>> GetAllAsync(CancellationToken cancellationToken)
         {
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Empty;
             return GetCollection<TDocument>().Find(filter).ToListAsync();
         }
 
-        public Task<TDocument> GetByIdAsync(Guid id)
+        public Task<TDocument> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
             return GetCollection<TDocument>().Find(filter).SingleOrDefaultAsync();
         }
 
-        public Task InsertOneAsync(TDocument document)
+        public Task InsertOneAsync(TDocument document, CancellationToken cancellationToken)
         {
             return GetCollection<TDocument>().InsertOneAsync(document);
         }
 
-        public async Task<bool> ExistAsync(List<Guid> ids, CancellationToken token)
+        public async Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
         {
             var filterBuilder = Builders<TDocument>.Filter;
             var emptyFilter = filterBuilder.Empty;
@@ -47,14 +47,14 @@
             return count == ids.Count;
         }
 
-        public async Task<bool> ExistsAsync(Guid id, CancellationToken token)
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
         {
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
             return await GetCollection<TDocument>().CountAsync(filter) > 0;
         }
 
-        public Task UpdateAsync(TDocument document)
+        public Task UpdateAsync(TDocument document, CancellationToken cancellationToken)
         {
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, document.Id);

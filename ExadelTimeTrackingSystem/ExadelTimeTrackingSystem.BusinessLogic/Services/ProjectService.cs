@@ -21,38 +21,38 @@
             _mapper = mapper;
         }
 
-        public async Task<ProjectDTO> CreateAsync(CreateProjectDTO projectDto)
+        public async Task<ProjectDTO> CreateAsync(CreateProjectDTO projectDto, CancellationToken cancellationToken)
         {
             var project = _mapper.Map<Project>(projectDto);
-            await _repository.InsertOneAsync(project);
+            await _repository.InsertOneAsync(project, cancellationToken);
             return _mapper.Map<ProjectDTO>(project);
         }
 
-        public async Task<List<ProjectDTO>> GetAllAsync()
+        public async Task<List<ProjectDTO>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var projects = await _repository.GetAllAsync();
+            var projects = await _repository.GetAllAsync(cancellationToken);
             return _mapper.Map<List<ProjectDTO>>(projects);
         }
 
-        public async Task<ProjectDTO> GetByIdAsync(Guid id)
+        public async Task<ProjectDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            var project = await _repository.GetByIdAsync(id);
+            var project = await _repository.GetByIdAsync(id, cancellationToken);
             return _mapper.Map<ProjectDTO>(project);
         }
 
-        public Task<List<string>> GetNamesAsync()
+        public Task<List<string>> GetNamesAsync(CancellationToken cancellationToken)
         {
-            return _repository.GetNamesAsync();
+            return _repository.GetNamesAsync(cancellationToken);
         }
 
-        public Task<List<string>> GetActivitiesAsync(Guid id)
+        public Task<List<string>> GetActivitiesAsync(Guid id, CancellationToken cancellationToken)
         {
-            return _repository.GetActivitiesAsync(id);
+            return _repository.GetActivitiesAsync(id, cancellationToken);
         }
 
-        public Task<string> GetNameAsync(Guid id)
+        public Task<string> GetNameAsync(Guid id, CancellationToken cancellationToken)
         {
-            return _repository.GetNameAsync(id);
+            return _repository.GetNameAsync(id, cancellationToken);
         }
 
         public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
@@ -65,10 +65,10 @@
             return _repository.ExistsAsync(id, cancellationToken);
         }
 
-        public async Task<ProjectDTO> UpdateAsync(ProjectDTO projectDto)
+        public async Task<ProjectDTO> UpdateAsync(ProjectDTO projectDto, CancellationToken cancellationToken)
         {
             var project = _mapper.Map<Project>(projectDto);
-            await _repository.UpdateAsync(project);
+            await _repository.UpdateAsync(project, cancellationToken);
             return projectDto;
         }
     }
