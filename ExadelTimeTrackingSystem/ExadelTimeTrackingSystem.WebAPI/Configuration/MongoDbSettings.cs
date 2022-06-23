@@ -6,5 +6,7 @@
     public class MongoDbSettings : IMongoDbSettings
     {
         public string ConnectionString { get; set; }
+
+        public int CancellationTokenTimeOut { get; set; }
     }
 }

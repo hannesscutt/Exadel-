@@ -8,10 +8,16 @@
 
     public static class CancellationTokenCreator
     {
-        public static CancellationToken Create()
+        public static CancellationToken Create(int cancellationTokenTimeOut)
         {
-            var source = new CancellationTokenSource(TimeSpan.FromSeconds(0));
-            return source.Token;
+            if (cancellationTokenTimeOut.Equals(null))
+            {
+                return new CancellationTokenSource().Token;
+            }
+            else
+            {
+                return new CancellationTokenSource(TimeSpan.FromSeconds(cancellationTokenTimeOut)).Token;
+            }
         }
     }
 }
