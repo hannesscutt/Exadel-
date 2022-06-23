@@ -17,6 +17,7 @@
 
         public Task<List<Models.Task>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(d => d.Date, date.Date);
             return GetCollection<Models.Task>().Find(filter).ToListAsync();
@@ -24,6 +25,7 @@
 
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(t => t.Id, id);
             return GetCollection<Models.Task>().DeleteOneAsync(filter);
@@ -31,6 +33,7 @@
 
         public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
             var updateBuilder = Builders<Models.Task>.Update;
             var dateFilter = filterBuilder.Eq(t => t.Date, date);
@@ -42,6 +45,7 @@
 
         public Task BulkCreateAsync(List<Models.Task> tasks, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }
     }

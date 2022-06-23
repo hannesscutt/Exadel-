@@ -22,6 +22,7 @@
 
         public Task<List<TDocument>> GetAllAsync(CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Empty;
             return GetCollection<TDocument>().Find(filter).ToListAsync();
@@ -29,6 +30,7 @@
 
         public Task<TDocument> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
             return GetCollection<TDocument>().Find(filter).SingleOrDefaultAsync();
@@ -36,11 +38,14 @@
 
         public Task InsertOneAsync(TDocument document, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
             return GetCollection<TDocument>().InsertOneAsync(document);
         }
 
         public async Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<TDocument>.Filter;
             var emptyFilter = filterBuilder.Empty;
             var count = await GetCollection<TDocument>().CountAsync(emptyFilter);
@@ -49,6 +54,7 @@
 
         public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, id);
             return await GetCollection<TDocument>().CountAsync(filter) > 0;
@@ -56,6 +62,7 @@
 
         public Task UpdateAsync(TDocument document, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<TDocument>.Filter;
             var filter = filterBuilder.Eq(d => d.Id, document.Id);
             return GetCollection<TDocument>().ReplaceOneAsync(filter, document);
