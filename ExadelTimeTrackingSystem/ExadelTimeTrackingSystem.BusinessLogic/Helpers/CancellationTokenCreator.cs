@@ -10,7 +10,7 @@
     {
         public static CancellationToken Create(int? cancellationTokenTimeOut)
         {
-            return !cancellationTokenTimeOut.HasValue ? CancellationToken.None : new CancellationTokenSource(cancellationTokenTimeOut.Value).Token;
+            return cancellationTokenTimeOut.HasValue ? new CancellationTokenSource(cancellationTokenTimeOut.Value).Token : CancellationToken.None;
         }
     }
 }
