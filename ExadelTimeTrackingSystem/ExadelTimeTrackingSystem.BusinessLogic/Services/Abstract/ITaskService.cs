@@ -18,7 +18,7 @@
 
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<TaskDTO> UpdateAsync(TaskDTO task, CancellationToken cancellationToken);
+        Task<TaskDTO> UpdateAsync(UpdateTaskDTO task, CancellationToken cancellationToken);
 
         Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken);
 

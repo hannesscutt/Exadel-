@@ -59,9 +59,10 @@
             return _repository.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<TaskDTO> UpdateAsync(TaskDTO taskDto, CancellationToken cancellationToken)
+        public async Task<TaskDTO> UpdateAsync(UpdateTaskDTO updateTaskDto, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            var taskDto = _mapper.Map<TaskDTO>(updateTaskDto);
             var task = _mapper.Map<Data.Models.Task>(taskDto);
             await _repository.UpdateAsync(task, cancellationToken);
             return taskDto;

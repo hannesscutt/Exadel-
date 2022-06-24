@@ -16,6 +16,7 @@
             services.AddScoped<IValidator<ProjectDTO>, ProjectDTOValidator>();
             services.AddScoped<IValidator<CreateTaskDTO>, CreateTaskDTOValidator>();
             services.AddScoped<IValidator<TaskDTO>, TaskDTOValidator>();
+            services.AddScoped<IValidator<UpdateTaskDTO>, UpdateTaskDTOValidator>();
             services.AddScoped<IValidatorFactory, ServiceProviderValidatorFactory>();
             return services;
         }

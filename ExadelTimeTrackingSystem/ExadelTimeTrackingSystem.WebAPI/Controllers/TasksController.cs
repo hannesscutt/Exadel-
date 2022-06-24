@@ -73,7 +73,7 @@
         }
 
         [HttpPut]
-        public async Task<ActionResult<TaskDTO>> UpdateTaskAsync([FromBody] TaskDTO task)
+        public async Task<ActionResult<TaskDTO>> UpdateTaskAsync([FromBody] UpdateTaskDTO task)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();

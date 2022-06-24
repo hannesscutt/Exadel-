@@ -25,7 +25,7 @@
         private void ConfigureRules()
         {
             RuleFor(t => t.HoursSpent)
-                .InclusiveBetween(0, 1000);
+                .InclusiveBetween(1, 24);
 
             RuleFor(t => t.ApproverId)
                 .NotEmpty()
@@ -52,9 +52,6 @@
                 .NotEmpty()
                 .MustAsync(_userService.ExistsAsync)
                 .WithMessage(Constants.Validation.EMPLOYEE_ID_DOES_NOT_EXIST);
-
-            RuleFor(t => t.IsOvertime)
-                .NotEmpty();
         }
     }
 }
