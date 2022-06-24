@@ -25,7 +25,6 @@
         private void ConfigureRules()
         {
             RuleFor(t => t.HoursSpent)
-                .NotEmpty()
                 .InclusiveBetween(0, 1000);
 
             RuleFor(t => t.ApproverId)
