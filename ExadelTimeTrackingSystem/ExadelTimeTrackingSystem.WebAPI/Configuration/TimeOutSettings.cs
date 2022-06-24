@@ -6,7 +6,7 @@
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
 
-    public class TimeOutSettings : ITimeOutSettings
+    public class TimeOutSettings
     {
         public int? TimeOutSeconds { get; set; }
     }
