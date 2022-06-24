@@ -35,14 +35,18 @@
             RuleFor(t => t.Date)
                 .NotEmpty();
 
-            RuleFor(t => t.Activity)
-                .NotEmpty()
-                .MaximumLength(50);
-
             RuleFor(t => t.ProjectId)
-                .NotEmpty()
-                .MustAsync(_projectService.ExistsAsync)
-                .WithMessage(Constants.Validation.PROJECT_ID_DOES_NOT_EXIST);
+               .NotEmpty()
+               .MustAsync(_projectService.ExistsAsync)
+               .WithMessage(Constants.Validation.PROJECT_ID_DOES_NOT_EXIST);
+
+            RuleFor(t => t)
+                .MustAsync(_projectService.ActivityExistsAsync)
+                .WithName("Activity")
+                .WithMessage(Constants.Validation.ACTIVITY_NOT_FOUND);
+
+            RuleFor(t => t.Activity)
+                .NotEmpty();
 
             RuleFor(t => t.Description)
                 .NotEmpty()

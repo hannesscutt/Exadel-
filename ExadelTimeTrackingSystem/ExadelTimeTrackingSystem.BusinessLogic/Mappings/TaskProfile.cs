@@ -18,9 +18,6 @@
                 .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date.Date))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Status.Pending))
                 .ForMember(dest => dest.ProjectName, opt => opt.Ignore());
-            CreateMap<UpdateTaskDTO, TaskDTO>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => Status.Pending))
-                .ForMember(dest => dest.ProjectName, opt => opt.Ignore());
         }
     }
 }

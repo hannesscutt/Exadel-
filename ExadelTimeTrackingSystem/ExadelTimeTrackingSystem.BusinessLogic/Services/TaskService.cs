@@ -64,6 +64,7 @@
             cancellationToken.ThrowIfCancellationRequested();
             var taskDto = _mapper.Map<TaskDTO>(updateTaskDto);
             var task = _mapper.Map<Data.Models.Task>(taskDto);
+            task.ProjectName = await _projectService.GetNameAsync(task.ProjectId, cancellationToken);
             await _repository.UpdateAsync(task, cancellationToken);
             return taskDto;
         }

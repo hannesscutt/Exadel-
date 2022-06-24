@@ -80,5 +80,11 @@
             await _repository.UpdateAsync(project, cancellationToken);
             return projectDto;
         }
+
+        public Task<bool> ActivityExistsAsync(CreateTaskDTO task, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ActivityExistsAsync(task.ProjectId, task.Activity, cancellationToken);
+        }
     }
 }
