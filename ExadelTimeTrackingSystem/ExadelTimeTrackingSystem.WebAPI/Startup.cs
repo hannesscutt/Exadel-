@@ -32,6 +32,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.AddSingleton<IMongoDbSettings>(serviceProvider =>
                 serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
+            services.Configure<TimeOutSettings>(Configuration.GetSection(nameof(TimeOutSettings)));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.AddRepositories();
@@ -39,6 +40,7 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.AddValidators();
             services.AddControllers(options =>
             {
+                options.Filters.Add<ResolveErrorFilter>();
                 options.Filters.Add<ModelValidationActionFilter>();
             });
 

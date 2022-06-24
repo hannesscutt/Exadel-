@@ -11,22 +11,22 @@
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
-        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        public UserService(IUserRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
-        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken token)
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
         {
-            return _repository.ExistAsync(ids, token);
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ExistAsync(ids, cancellationToken);
         }
 
-        public Task<bool> ExistsAsync(Guid id, CancellationToken token)
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
         {
-            return _repository.ExistsAsync(id, token);
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ExistsAsync(id, cancellationToken);
         }
     }
 }

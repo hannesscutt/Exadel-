@@ -2,25 +2,26 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
 
     public interface ITaskService
     {
-        Task<List<TaskDTO>> GetAllAsync();
+        Task<List<TaskDTO>> GetAllAsync(CancellationToken cancellationToken);
 
-        Task<TaskDTO> GetByIdAsync(Guid id);
+        Task<TaskDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<TaskDTO> CreateAsync(CreateTaskDTO task);
+        Task<TaskDTO> CreateAsync(CreateTaskDTO task, CancellationToken cancellationToken);
 
-        Task<List<TaskDTO>> GetOnDateAsync(DateTime date);
+        Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<TaskDTO> UpdateAsync(TaskDTO task);
+        Task<TaskDTO> UpdateAsync(TaskDTO task, CancellationToken cancellationToken);
 
-        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId);
+        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken);
 
-        Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto);
+        Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken cancellationToken);
     }
 }
