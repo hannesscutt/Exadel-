@@ -3,6 +3,7 @@
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.BusinessLogic.Validators;
     using ExadelTimeTrackingSystem.Data.Validators;
     using FluentValidation;
     using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,8 @@
         {
             services.AddScoped<IValidator<CreateProjectDTO>, CreateProjectDTOValidator>();
             services.AddScoped<IValidator<ProjectDTO>, ProjectDTOValidator>();
+            services.AddScoped<IValidator<CreateTaskDTO>, CreateTaskDTOValidator>();
+            services.AddScoped<IValidator<TaskDTO>, TaskDTOValidator>();
             services.AddScoped<IValidatorFactory, ServiceProviderValidatorFactory>();
             return services;
         }

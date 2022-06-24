@@ -89,5 +89,17 @@
 
             return _mapper.Map<List<TaskDTO>>(newTasks);
         }
+
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ExistAsync(ids, cancellationToken);
+        }
+
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ExistsAsync(id, cancellationToken);
+        }
     }
 }
