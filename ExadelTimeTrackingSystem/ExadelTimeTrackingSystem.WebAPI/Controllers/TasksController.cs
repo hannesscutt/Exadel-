@@ -17,12 +17,12 @@
     public class TasksController : ControllerBase
     {
         private readonly ITaskService _service;
-        private readonly int _cancellationTokenTimeOut;
+        private readonly int? _cancellationTokenTimeOut;
 
-        public TasksController(ITaskService service, IOptions<MongoDbSettings> config)
+        public TasksController(ITaskService service, IOptionsMonitor<TimeOutSettings> config)
         {
             _service = service;
-            _cancellationTokenTimeOut = config.Value.CancellationTokenTimeOut;
+            _cancellationTokenTimeOut = config.CurrentValue.TimeOutSeconds;
         }
 
         [HttpGet]

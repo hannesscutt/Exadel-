@@ -11,12 +11,10 @@
     public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
-        private readonly IMapper _mapper;
 
-        public UserService(IUserRepository repository, IMapper mapper)
+        public UserService(IUserRepository repository)
         {
             _repository = repository;
-            _mapper = mapper;
         }
 
         public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)

@@ -8,20 +8,20 @@
 
     public interface ITaskService
     {
-        Task<List<TaskDTO>> GetAllAsync(CancellationToken token);
+        Task<List<TaskDTO>> GetAllAsync(CancellationToken cancellationToken);
 
-        Task<TaskDTO> GetByIdAsync(Guid id, CancellationToken token);
+        Task<TaskDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<TaskDTO> CreateAsync(CreateTaskDTO task, CancellationToken token);
+        Task<TaskDTO> CreateAsync(CreateTaskDTO task, CancellationToken cancellationToken);
 
-        Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken token);
+        Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken);
 
-        Task DeleteAsync(Guid id, CancellationToken token);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<TaskDTO> UpdateAsync(TaskDTO task, CancellationToken token);
+        Task<TaskDTO> UpdateAsync(TaskDTO task, CancellationToken cancellationToken);
 
-        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken token);
+        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken);
 
-        Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken token);
+        Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken cancellationToken);
     }
 }

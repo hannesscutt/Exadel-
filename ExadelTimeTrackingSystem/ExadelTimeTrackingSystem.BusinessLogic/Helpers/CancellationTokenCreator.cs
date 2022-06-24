@@ -8,15 +8,15 @@
 
     public static class CancellationTokenCreator
     {
-        public static CancellationToken Create(int cancellationTokenTimeOut)
+        public static CancellationToken Create(int? cancellationTokenTimeOut)
         {
-            if (cancellationTokenTimeOut.Equals(null))
+            if (!cancellationTokenTimeOut.HasValue)
             {
-                return new CancellationTokenSource().Token;
+                return CancellationToken.None;
             }
             else
             {
-                return new CancellationTokenSource(TimeSpan.FromSeconds(cancellationTokenTimeOut)).Token;
+                return new CancellationTokenSource(cancellationTokenTimeOut.Value).Token;
             }
         }
     }
