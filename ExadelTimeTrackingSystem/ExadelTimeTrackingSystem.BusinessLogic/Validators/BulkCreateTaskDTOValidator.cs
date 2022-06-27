@@ -7,24 +7,23 @@
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.BusinessLogic.Validators.Abstract;
     using FluentValidation;
 
     public class BulkCreateTaskDTOValidator : AbstractValidator<BulkCreateTaskDTO>
     {
-        private readonly IProjectService _projectService;
-        private readonly IUserService _userService;
+        private readonly IValidator<CreateTaskDTO> _createTaskDtoValidator;
 
-        public BulkCreateTaskDTOValidator(IProjectService projectService, IUserService userService)
+        public BulkCreateTaskDTOValidator(IValidator<CreateTaskDTO> createTaskDtoValidator)
         {
-            _projectService = projectService;
-            _userService = userService;
+            _createTaskDtoValidator = createTaskDtoValidator;
             ConfigureRules();
         }
 
         private void ConfigureRules()
         {
             RuleFor(t => t.Task)
-                .SetValidator(new CreateTaskDTOValidator(_userService, _projectService));
+                .SetValidator(_createTaskDtoValidator);
 
             RuleFor(t => t.Dates)
                 .NotEmpty();

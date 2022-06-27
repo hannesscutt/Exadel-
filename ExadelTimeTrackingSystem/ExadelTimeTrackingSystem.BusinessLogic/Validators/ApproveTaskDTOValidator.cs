@@ -26,7 +26,7 @@
             RuleFor(t => t.Date)
                 .NotEmpty();
 
-            RuleFor(t => t.EmployeeID)
+            RuleFor(t => t.EmployeeId)
                 .NotEmpty()
                 .MustAsync(_userService.ExistsAsync)
                 .WithMessage(Constants.Validation.EMPLOYEE_ID_DOES_NOT_EXIST);
