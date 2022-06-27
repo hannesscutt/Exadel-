@@ -81,10 +81,10 @@
             return projectDto;
         }
 
-        public Task<bool> ActivityExistsAsync(CreateTaskDTO task, CancellationToken cancellationToken)
+        public Task<bool> ActivityExistsAsync(string activity, Guid id, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return _repository.ActivityExistsAsync(task.ProjectId, task.Activity, cancellationToken);
+            return _repository.ActivityExistsAsync(id, activity, cancellationToken);
         }
     }
 }

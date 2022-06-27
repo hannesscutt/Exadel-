@@ -40,13 +40,10 @@
                .MustAsync(_projectService.ExistsAsync)
                .WithMessage(Constants.Validation.PROJECT_ID_DOES_NOT_EXIST);
 
-            RuleFor(t => t)
-                .MustAsync(_projectService.ActivityExistsAsync)
-                .WithName("Activity")
-                .WithMessage(Constants.Validation.ACTIVITY_NOT_FOUND);
-
             RuleFor(t => t.Activity)
-                .NotEmpty();
+                .NotEmpty()
+                .MustAsync((t, activity, cancellationToken) => _projectService.ActivityExistsAsync(activity, t.ProjectId, cancellationToken))
+                .WithMessage(Constants.Validation.ACTIVITY_NOT_FOUND);
 
             RuleFor(t => t.Description)
                 .NotEmpty()

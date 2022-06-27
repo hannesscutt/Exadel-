@@ -26,6 +26,6 @@
 
         Task<ProjectDTO> UpdateAsync(ProjectDTO projectDto, CancellationToken cancellationToken);
 
-        Task<bool> ActivityExistsAsync(CreateTaskDTO task, CancellationToken cancellationToken);
+        Task<bool> ActivityExistsAsync(string activity, Guid id, CancellationToken cancellationToken);
     }
 }

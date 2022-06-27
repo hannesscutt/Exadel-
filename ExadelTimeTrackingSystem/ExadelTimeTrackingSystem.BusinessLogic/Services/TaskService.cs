@@ -62,11 +62,10 @@
         public async Task<TaskDTO> UpdateAsync(UpdateTaskDTO updateTaskDto, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var taskDto = _mapper.Map<TaskDTO>(updateTaskDto);
-            var task = _mapper.Map<Data.Models.Task>(taskDto);
+            var task = _mapper.Map<Data.Models.Task>(updateTaskDto);
             task.ProjectName = await _projectService.GetNameAsync(task.ProjectId, cancellationToken);
             await _repository.UpdateAsync(task, cancellationToken);
-            return taskDto;
+            return _mapper.Map<TaskDTO>(task);
         }
 
         public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken)

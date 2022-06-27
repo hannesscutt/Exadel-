@@ -45,15 +45,8 @@
             cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Project>.Filter;
             var filter = filterBuilder.Eq(p => p.Id, id);
-            var project = await GetCollection<Project>().Find(filter).SingleOrDefaultAsync();
-            if (project != null)
-            {
-                return project.Activities.Contains(activity) ? true : false;
-            }
-            else
-            {
-                return false;
-            }
+            var filterActivities = filterBuilder.AnyEq(p => p.Activities, activity);
+            return await GetCollection<Project>().Find(filter & filterActivities).CountAsync() > 0 ? true : false;
         }
     }
 }
