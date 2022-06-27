@@ -46,7 +46,7 @@
             var filterBuilder = Builders<Project>.Filter;
             var filter = filterBuilder.Eq(p => p.Id, id);
             var filterActivities = filterBuilder.AnyEq(p => p.Activities, activity);
-            return await GetCollection<Project>().Find(filter & filterActivities).CountAsync() > 0 ? true : false;
+            return await GetCollection<Project>().Find(filter & filterActivities).CountAsync() > 0;
         }
     }
 }
