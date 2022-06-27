@@ -18,10 +18,14 @@
 
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<TaskDTO> UpdateAsync(TaskDTO task, CancellationToken cancellationToken);
+        Task<TaskDTO> UpdateAsync(UpdateTaskDTO task, CancellationToken cancellationToken);
 
         Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken);
 
         Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken cancellationToken);
+
+        Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken);
+
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
     }
 }

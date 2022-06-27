@@ -13,5 +13,7 @@
         Task<List<string>> GetActivitiesAsync(Guid id, CancellationToken cancellationToken);
 
         Task<string> GetNameAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<bool> ActivityExistsAsync(Guid id, string activity, CancellationToken cancellationToken);
     }
 }

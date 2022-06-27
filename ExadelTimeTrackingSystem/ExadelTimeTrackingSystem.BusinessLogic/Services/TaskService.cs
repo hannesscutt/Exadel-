@@ -59,12 +59,13 @@
             return _repository.DeleteAsync(id, cancellationToken);
         }
 
-        public async Task<TaskDTO> UpdateAsync(TaskDTO taskDto, CancellationToken cancellationToken)
+        public async Task<TaskDTO> UpdateAsync(UpdateTaskDTO updateTaskDto, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var task = _mapper.Map<Data.Models.Task>(taskDto);
+            var task = _mapper.Map<Data.Models.Task>(updateTaskDto);
+            task.ProjectName = await _projectService.GetNameAsync(task.ProjectId, cancellationToken);
             await _repository.UpdateAsync(task, cancellationToken);
-            return taskDto;
+            return _mapper.Map<TaskDTO>(task);
         }
 
         public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken)
@@ -88,6 +89,18 @@
             await _repository.BulkCreateAsync(newTasks, cancellationToken);
 
             return _mapper.Map<List<TaskDTO>>(newTasks);
+        }
+
+        public Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ExistAsync(ids, cancellationToken);
+        }
+
+        public Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.ExistsAsync(id, cancellationToken);
         }
     }
 }
