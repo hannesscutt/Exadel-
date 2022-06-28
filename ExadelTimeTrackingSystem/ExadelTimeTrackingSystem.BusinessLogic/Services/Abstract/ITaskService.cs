@@ -27,5 +27,7 @@
         Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<List<string>> GetHours(GetHoursDTO hoursDto, CancellationToken cancellationToken);
     }
 }

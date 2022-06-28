@@ -100,5 +100,15 @@
             var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto, cancellationToken);
             return Created(string.Empty, tasksDto);
         }
+
+        [HttpGet("hours")]
+
+        public async Task<ActionResult<List<string>>> GetHoursAsync([FromQuery] GetHoursDTO hoursDto)
+        {
+            var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
+            cancellationToken.ThrowIfCancellationRequested();
+            var hours = await _service.GetHours(hoursDto, cancellationToken);
+            return Ok(hours);
+        }
     }
 }

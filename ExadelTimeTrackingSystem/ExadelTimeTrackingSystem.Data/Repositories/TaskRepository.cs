@@ -2,9 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
+    using ExadelTimeTrackingSystem.Data.Extensions;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
     using MongoDB.Driver;
 
@@ -47,6 +49,34 @@
         {
             cancellationToken.ThrowIfCancellationRequested();
             return GetCollection<Models.Task>().InsertManyAsync(tasks);
+        }
+
+        public Task<int[]> GetHours(DateTime date, Guid employeeId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var filterBuilder = Builders<Models.Task>.Filter;
+            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
+            int[] array = new int[8];
+            int total = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                var dateFilter = filterBuilder.Eq(t => t.Date, date);
+                var hoursOnDay = GetCollection<Models.Task>().Find(dateFilter & employeeFilter).Project(t => t.HoursSpent).ToList();
+                if (hoursOnDay == null)
+                {
+                    array[i] = 0;
+                }
+                else
+                {
+                    array[i] = hoursOnDay.Sum();
+                    total += hoursOnDay.Sum();
+                }
+
+                date = date.DeepCopy().AddDays(1);
+            }
+
+            array[array.Length - 1] = total;
+            return Task.FromResult(array);
         }
     }
 }

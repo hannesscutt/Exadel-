@@ -102,5 +102,21 @@
             cancellationToken.ThrowIfCancellationRequested();
             return _repository.ExistsAsync(id, cancellationToken);
         }
+
+        public async Task<List<string>> GetHours(GetHoursDTO hoursDto, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            List<string> stringList = new List<string>();
+            var array = await _repository.GetHours(hoursDto.Date, hoursDto.EmployeeId, cancellationToken);
+            stringList.Add("Sunday: " + array[0]);
+            stringList.Add("Monday: " + array[1]);
+            stringList.Add("Tuesday: " + array[2]);
+            stringList.Add("Wednesday: " + array[3]);
+            stringList.Add("Thursday: " + array[4]);
+            stringList.Add("Friday: " + array[5]);
+            stringList.Add("Saturday: " + array[6]);
+            stringList.Add("Total: " + array[7]);
+            return stringList;
+        }
     }
 }
