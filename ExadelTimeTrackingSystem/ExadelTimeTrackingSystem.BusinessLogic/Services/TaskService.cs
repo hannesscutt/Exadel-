@@ -32,7 +32,7 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<List<TaskDTO>> GetAllAsync(Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var tasks = await _repository.GetAllAsync(cancellationToken);
@@ -46,10 +46,10 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken)
+        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _repository.GetOnDateAsync(date, cancellationToken);
+            var tasks = await _repository.GetOnDateAsync(date, employeeId, cancellationToken);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 

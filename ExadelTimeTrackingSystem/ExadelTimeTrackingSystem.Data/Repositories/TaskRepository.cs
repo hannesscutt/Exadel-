@@ -17,12 +17,13 @@
         {
         }
 
-        public Task<List<Models.Task>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken)
+        public Task<List<Models.Task>> GetOnDateAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
             var filter = filterBuilder.Eq(d => d.Date, date.Date);
-            return GetCollection<Models.Task>().Find(filter).ToListAsync();
+            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
+            return GetCollection<Models.Task>().Find(filter & employeeFilter).ToListAsync();
         }
 
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken)

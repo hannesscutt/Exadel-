@@ -7,7 +7,7 @@
 
     public interface ITaskRepository : IMongoRepository<Models.Task>
     {
-        Task<List<Models.Task>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken);
+        Task<List<Models.Task>> GetOnDateAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken);
 
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 

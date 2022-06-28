@@ -26,11 +26,11 @@
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TaskDTO>>> GetAllAsync()
+        public async Task<ActionResult<List<TaskDTO>>> GetAllAsync([FromQuery] Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetAllAsync(cancellationToken);
+            var tasks = await _service.GetAllAsync(employeeId, cancellationToken);
             return Ok(tasks);
         }
 
@@ -54,11 +54,11 @@
 
         [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date, Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetOnDateAsync(date, cancellationToken);
+            var tasks = await _service.GetOnDateAsync(date, employeeId, cancellationToken);
             return Ok(tasks);
         }
 

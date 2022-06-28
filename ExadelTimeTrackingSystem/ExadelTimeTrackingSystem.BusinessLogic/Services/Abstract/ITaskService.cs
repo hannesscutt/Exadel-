@@ -8,13 +8,13 @@
 
     public interface ITaskService
     {
-        Task<List<TaskDTO>> GetAllAsync(CancellationToken cancellationToken);
+        Task<List<TaskDTO>> GetAllAsync(Guid employeeId, CancellationToken cancellationToken);
 
         Task<TaskDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
         Task<TaskDTO> CreateAsync(CreateTaskDTO task, CancellationToken cancellationToken);
 
-        Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken);
+        Task<List<TaskDTO>> GetOnDateAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken);
 
         Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
