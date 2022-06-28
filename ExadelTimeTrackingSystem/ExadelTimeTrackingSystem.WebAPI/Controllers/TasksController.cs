@@ -83,11 +83,11 @@
 
         [HttpPut("approve")]
 
-        public async Task<ActionResult> ApproveAsync([FromQuery] DateTime date, [FromQuery] Guid projectId, [FromQuery] Guid employeeId)
+        public async Task<ActionResult> ApproveAsync([FromQuery] ApproveTaskDTO approveTaskDto)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            await _service.ApproveAsync(date, projectId, employeeId, cancellationToken);
+            await _service.ApproveAsync(approveTaskDto, cancellationToken);
             return NoContent();
         }
 
