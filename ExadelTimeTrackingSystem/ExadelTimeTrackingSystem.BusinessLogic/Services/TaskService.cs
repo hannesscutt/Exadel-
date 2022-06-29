@@ -32,10 +32,10 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetAllAsync(Guid employeeId, CancellationToken cancellationToken)
+        public async Task<List<TaskDTO>> GetAllForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _repository.GetAllByEmployeeIdAsync(employeeId, cancellationToken);
+            var tasks = await _repository.GetAllForEmployeeAsync(employeeId, cancellationToken);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
@@ -103,10 +103,19 @@
             return _repository.ExistsAsync(id, cancellationToken);
         }
 
-        public async Task<List<string>> GetHours(GetHoursDTO hoursDto, CancellationToken cancellationToken)
+        public async Task<List<string>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await _repository.GetHours(hoursDto.Date, hoursDto.EmployeeId, cancellationToken);
+            var hourDictionary = await _repository.GetHoursByDatesAsync(hoursDto.Date, hoursDto.EmployeeId, cancellationToken);
+            List<string> list = new List<string>();
+
+            foreach (var entry in hourDictionary)
+            {
+                list.Add(entry.Key + ": " + entry.Value);
+            }
+
+            list.Add("Total: " + hourDictionary.Values.Sum());
+            return list;
         }
     }
 }

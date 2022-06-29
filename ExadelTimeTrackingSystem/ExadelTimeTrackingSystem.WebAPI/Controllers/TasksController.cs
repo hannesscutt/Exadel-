@@ -30,7 +30,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetAllAsync(employeeId, cancellationToken);
+            var tasks = await _service.GetAllForEmployeeAsync(employeeId, cancellationToken);
             return Ok(tasks);
         }
 
@@ -101,13 +101,13 @@
             return Created(string.Empty, tasksDto);
         }
 
-        [HttpGet("hours-by-date")]
+        [HttpGet("hours-by-dates")]
 
-        public async Task<ActionResult<List<string>>> GetHoursAsync([FromQuery] GetHoursDTO hoursDto)
+        public async Task<ActionResult<List<string>>> GetHoursByDatesAsync([FromQuery] GetHoursDTO hoursDto)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var hours = await _service.GetHours(hoursDto, cancellationToken);
+            var hours = await _service.GetHoursByDatesAsync(hoursDto, cancellationToken);
             return Ok(hours);
         }
     }

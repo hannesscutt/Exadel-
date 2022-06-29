@@ -28,7 +28,8 @@
 
             RuleFor(t => t.Date)
                 .NotEmpty()
-                .Must(t => t.Date.DayOfWeek == DayOfWeek.Sunday);
+                .ChildRules(t => t.RuleFor(d => d.DayOfWeek)
+                .Equal(DayOfWeek.Sunday));
         }
     }
 }

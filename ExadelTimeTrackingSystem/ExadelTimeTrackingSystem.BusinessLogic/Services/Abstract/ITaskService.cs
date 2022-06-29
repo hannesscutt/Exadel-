@@ -8,7 +8,7 @@
 
     public interface ITaskService
     {
-        Task<List<TaskDTO>> GetAllAsync(Guid employeeId, CancellationToken cancellationToken);
+        Task<List<TaskDTO>> GetAllForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken);
 
         Task<TaskDTO> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
@@ -28,6 +28,6 @@
 
         Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<List<string>> GetHours(GetHoursDTO hoursDto, CancellationToken cancellationToken);
+        Task<List<string>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken);
     }
 }

@@ -17,7 +17,7 @@
         {
         }
 
-        public Task<List<Models.Task>> GetAllByEmployeeIdAsync(Guid employeeId, CancellationToken cancellationToken)
+        public Task<List<Models.Task>> GetAllForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
@@ -60,13 +60,13 @@
             return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }
 
-        public Task<List<string>> GetHours(DateTime date, Guid employeeId, CancellationToken cancellationToken)
+        public async Task<Dictionary<DayOfWeek, int>> GetHoursByDatesAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             List<DateTime> dateList = new List<DateTime>();
             List<string> testList = new List<string>();
-            int total = 0;
-
+            var startDate = date;
+            var endDate = date.DeepCopy().AddDays(6);
             for (int i = 0; i < 7; i++)
             {
                 dateList.Add(date);
@@ -75,24 +75,19 @@
 
             var filterBuilder = Builders<Models.Task>.Filter;
             var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
-            var datefilter = filterBuilder.In(t => t.Date, dateList);
+            var dateFilter = filterBuilder.In(t => t.Date, dateList);
+            var testFilter = filterBuilder.Where(t => t.Date >= startDate && t.Date <= endDate);
 
-            var hours = GetCollection<Models.Task>().Aggregate().Match(datefilter & employeeFilter).Group(
+            var hours = await GetCollection<Models.Task>().Aggregate().Match(testFilter & employeeFilter).Group(
                 t => t.Date,
                 group => new
                 {
                     date = group.Key,
                     Total = group.Sum(t => t.HoursSpent),
-                }).ToList();
+                }).ToListAsync();
 
-            foreach (var hour in hours)
-            {
-                total += hour.Total;
-                testList.Add(hour.date.DayOfWeek + ": " + hour.Total);
-            }
-
-            testList.Add("Total: " + total);
-            return Task.FromResult(testList);
+            var hourDictionary = hours.ToDictionary(t => t.date.DayOfWeek, t => t.Total);
+            return hourDictionary;
         }
     }
 }
