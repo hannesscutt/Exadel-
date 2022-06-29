@@ -17,13 +17,21 @@
         {
         }
 
+        public Task<List<Models.Task>> GetAllByEmployeeIdAsync(Guid employeeId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var filterBuilder = Builders<Models.Task>.Filter;
+            var filter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
+            return GetCollection<Models.Task>().Find(filter).ToListAsync();
+        }
+
         public Task<List<Models.Task>> GetOnDateAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
-            var filter = filterBuilder.Eq(d => d.Date, date.Date);
+            var dateFilter = filterBuilder.Eq(d => d.Date, date.Date);
             var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
-            return GetCollection<Models.Task>().Find(filter & employeeFilter).ToListAsync();
+            return GetCollection<Models.Task>().Find(dateFilter & employeeFilter).ToListAsync();
         }
 
         public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
@@ -52,32 +60,39 @@
             return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }
 
-        public Task<int[]> GetHours(DateTime date, Guid employeeId, CancellationToken cancellationToken)
+        public Task<List<string>> GetHours(DateTime date, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var filterBuilder = Builders<Models.Task>.Filter;
-            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
-            int[] array = new int[8];
+            List<DateTime> dateList = new List<DateTime>();
+            List<string> testList = new List<string>();
             int total = 0;
-            for (int i = 0; i < 6; i++)
-            {
-                var dateFilter = filterBuilder.Eq(t => t.Date, date);
-                var hoursOnDay = GetCollection<Models.Task>().Find(dateFilter & employeeFilter).Project(t => t.HoursSpent).ToList();
-                if (hoursOnDay == null)
-                {
-                    array[i] = 0;
-                }
-                else
-                {
-                    array[i] = hoursOnDay.Sum();
-                    total += hoursOnDay.Sum();
-                }
 
-                date = date.DeepCopy().AddDays(1);
+            for (int i = 0; i < 7; i++)
+            {
+                dateList.Add(date);
+                date = date.AddDays(1);
             }
 
-            array[array.Length - 1] = total;
-            return Task.FromResult(array);
+            var filterBuilder = Builders<Models.Task>.Filter;
+            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
+            var datefilter = filterBuilder.In(t => t.Date, dateList);
+
+            var hours = GetCollection<Models.Task>().Aggregate().Match(datefilter & employeeFilter).Group(
+                t => t.Date,
+                group => new
+                {
+                    date = group.Key,
+                    Total = group.Sum(t => t.HoursSpent),
+                }).ToList();
+
+            foreach (var hour in hours)
+            {
+                total += hour.Total;
+                testList.Add(hour.date.DayOfWeek + ": " + hour.Total);
+            }
+
+            testList.Add("Total: " + total);
+            return Task.FromResult(testList);
         }
     }
 }

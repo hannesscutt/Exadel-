@@ -15,6 +15,8 @@
 
         Task BulkCreateAsync(List<Models.Task> tasks, CancellationToken cancellationToken);
 
-        Task<int[]> GetHours(DateTime date, Guid employeeId, CancellationToken cancellationToken);
+        Task<List<string>> GetHours(DateTime date, Guid employeeId, CancellationToken cancellationToken);
+
+        Task<List<Models.Task>> GetAllByEmployeeIdAsync(Guid employeeId, CancellationToken cancellationToken);
     }
 }

@@ -54,7 +54,7 @@
 
         [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date, Guid employeeId)
+        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date, [FromQuery] Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
@@ -101,7 +101,7 @@
             return Created(string.Empty, tasksDto);
         }
 
-        [HttpGet("hours")]
+        [HttpGet("hours-by-date")]
 
         public async Task<ActionResult<List<string>>> GetHoursAsync([FromQuery] GetHoursDTO hoursDto)
         {

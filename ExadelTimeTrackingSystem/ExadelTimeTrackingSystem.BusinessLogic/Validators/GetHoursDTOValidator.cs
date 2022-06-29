@@ -28,7 +28,7 @@
 
             RuleFor(t => t.Date)
                 .NotEmpty()
-                .Must((t, cancellationToken) => t.Date.DayOfWeek.Equals(DayOfWeek.Sunday));
+                .Must(t => t.Date.DayOfWeek == DayOfWeek.Sunday);
         }
     }
 }
