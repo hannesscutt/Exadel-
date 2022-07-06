@@ -8,6 +8,7 @@
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.Data.Extensions;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
 
     public class TaskService : ITaskService
@@ -107,14 +108,19 @@
         {
             cancellationToken.ThrowIfCancellationRequested();
             var hourDictionary = await _repository.GetHoursByDatesAsync(hoursDto.Date, hoursDto.EmployeeId, cancellationToken);
-            List<string> list = new List<string>();
 
-            foreach (var entry in hourDictionary)
+            for (int i = 0; i < 7; i++)
             {
-                list.Add(entry.Key + ": " + entry.Value);
+                if (!hourDictionary.ContainsKey(hoursDto.Date.DeepCopy().AddDays(i)))
+                {
+                    hourDictionary.Add(hoursDto.Date.DeepCopy().AddDays(i), 0);
+                }
             }
 
-            list.Add("Total: " + hourDictionary.Values.Sum());
+            var sortedDict = new SortedDictionary<DayOfWeek, int>(hourDictionary.ToDictionary(d => d.Key.DayOfWeek, d => d.Value));
+
+            var list = new List<string>(sortedDict.Select(x => (x.Key + Constants.TaskMessages.COLON + x.Value)));
+            list.Add(Constants.TaskMessages.TOTAL + hourDictionary.Values.Sum());
             return list;
         }
     }

@@ -12,5 +12,11 @@
             public const string EMPLOYEE_ID_DOES_NOT_EXIST = "EmployeeId doesn't exist";
             public const string ACTIVITY_NOT_FOUND = "Activity was not found in the specified project";
         }
+
+        public static class TaskMessages
+        {
+            public const string TOTAL = "Total: ";
+            public const string COLON = ": ";
+        }
     }
 }
