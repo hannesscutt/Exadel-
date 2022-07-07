@@ -104,24 +104,23 @@
             return _repository.ExistsAsync(id, cancellationToken);
         }
 
-        public async Task<List<string>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken)
+        public async Task<Dictionary<string, int>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var hourDictionary = await _repository.GetHoursByDatesAsync(hoursDto.Date, hoursDto.EmployeeId, cancellationToken);
 
-            for (int i = 0; i < 7; i++)
+            foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
             {
-                if (!hourDictionary.ContainsKey(hoursDto.Date.DeepCopy().AddDays(i)))
+               if (!hourDictionary.Any(d => d.Key.Date.DayOfWeek == day))
                 {
-                    hourDictionary.Add(hoursDto.Date.DeepCopy().AddDays(i), 0);
+                    hourDictionary.Add(hoursDto.Date.AddDays((int)day), 0);
                 }
             }
 
-            var sortedDict = new SortedDictionary<DayOfWeek, int>(hourDictionary.ToDictionary(d => d.Key.DayOfWeek, d => d.Value));
+            var test = hourDictionary.ToDictionary(d => d.Key.DayOfWeek.ToString(), d => d.Value);
+            test.Add(Constants.TaskMessages.TOTAL, hourDictionary.Values.Sum());
 
-            var list = new List<string>(sortedDict.Select(x => (x.Key + Constants.TaskMessages.COLON + x.Value)));
-            list.Add(Constants.TaskMessages.TOTAL + hourDictionary.Values.Sum());
-            return list;
+            return test;
         }
     }
 }

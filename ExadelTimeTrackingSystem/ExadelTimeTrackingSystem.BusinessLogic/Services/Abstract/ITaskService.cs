@@ -28,6 +28,6 @@
 
         Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<List<string>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken);
+        Task<Dictionary<string, int>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken);
     }
 }

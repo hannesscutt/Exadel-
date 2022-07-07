@@ -103,7 +103,7 @@
 
         [HttpGet("hours-by-dates")]
 
-        public async Task<ActionResult<List<string>>> GetHoursByDatesAsync([FromQuery] GetHoursDTO hoursDto)
+        public async Task<ActionResult<Dictionary<string,int>>> GetHoursByDatesAsync([FromQuery] GetHoursDTO hoursDto)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();

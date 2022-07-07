@@ -8,6 +8,7 @@
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.Data.Extensions;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
+    using MongoDB.Bson;
     using MongoDB.Driver;
 
     public class TaskRepository : MongoRepository<Models.Task>, ITaskRepository
@@ -77,7 +78,57 @@
                 {
                     Date = group.Key,
                     Total = group.Sum(t => t.HoursSpent),
-                }).ToListAsync();
+                }).SortBy(t => t.Date).ToListAsync();
+/*
+            GetCollection<Models.Task>().Aggregate(
+
+            new BsonArray
+{
+    new BsonDocument("$match",
+    new BsonDocument()),
+    new BsonDocument("$match",
+    new BsonDocument("Date",
+    new BsonDocument
+            {
+                { "$gte",
+    new DateTime(2022, 6, 26, 0, 0, 0) },
+                { "$lte",
+    new DateTime(2022, 7, 2, 0, 0, 0) }
+            })),
+    new BsonDocument("$group",
+    new BsonDocument
+        {
+            { "_id", "$Date" },
+            { "total",
+    new BsonDocument("$sum", "$HoursSpent") }
+        }),
+    new BsonDocument("$project",
+    new BsonDocument("doc",
+    new BsonDocument
+            {
+                { "_id", "$_id" },
+                { "subtotal", "$total" }
+            })),
+    new BsonDocument("$group",
+    new BsonDocument
+        {
+            { "_id", BsonNull.Value },
+            { "total",
+    new BsonDocument("$sum", "$doc.subtotal") },
+            { "result",
+    new BsonDocument("$push", "$doc") }
+        }),
+    new BsonDocument("$project",
+    new BsonDocument
+        {
+            { "result", 1 },
+            { "_id", 0 },
+            { "total", 1 }
+        })
+}
+);
+*/
+
 
             var hourDictionary = hours.ToDictionary(t => t.Date, t => t.Total);
             return hourDictionary;
