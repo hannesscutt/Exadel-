@@ -17,6 +17,9 @@
         {
             public const string TOTAL = "Total: ";
             public const string COLON = ": ";
+            public const string SUM_OPERATION = "$sum";
+            public const string HOURS_SPENT = "$HoursSpent";
+            public const string GROUP_OPERATION = "$group";
         }
     }
 }

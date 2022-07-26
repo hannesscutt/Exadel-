@@ -3,12 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.Data.Extensions;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
     using MongoDB.Bson;
+    using MongoDB.Bson.Serialization;
     using MongoDB.Driver;
 
     public class TaskRepository : MongoRepository<Models.Task>, ITaskRepository
@@ -72,66 +74,144 @@
             var startDateFilter = filterBuilder.Gte(t => t.Date, startDate);
             var endDateFilter = filterBuilder.Lte(t => t.Date, endDate);
 
-            var hours = await GetCollection<Models.Task>().Aggregate().Match(endDateFilter & startDateFilter & employeeFilter).Group(
+            var pipeline = new EmptyPipelineDefinition<Models.Task>();
+
+            var group3 = pipeline.Group(
+                new BsonDocument
+                    {
+                        { "_id", BsonNull.Value },
+                        { "total",
+                new BsonDocument("$sum", "$HoursSpent") }
+                    });
+
+            var group4 = pipeline.Group(
+                new BsonDocument
+                    {
+                        { "_id", "$Date" },
+                        { "total",
+                new BsonDocument("$sum", "$HoursSpent") }
+                    });
+
+
+
+            var group1 = pipeline.Group(
+                t => BsonNull.Value,
+                group => new
+                {
+                    Total = group.Sum(t => t.HoursSpent),
+                });
+
+            var group2 = pipeline.Group(
                 t => t.Date,
                 group => new
                 {
                     Date = group.Key,
-                    Total = group.Sum(t => t.HoursSpent),
-                }).SortBy(t => t.Date).ToListAsync();
-/*
-            GetCollection<Models.Task>().Aggregate(
+                    TotalByDay = group.Sum(t => t.HoursSpent),
+                });
 
-            new BsonArray
-{
-    new BsonDocument("$match",
-    new BsonDocument()),
-    new BsonDocument("$match",
-    new BsonDocument("Date",
-    new BsonDocument
-            {
-                { "$gte",
-    new DateTime(2022, 6, 26, 0, 0, 0) },
-                { "$lte",
-    new DateTime(2022, 7, 2, 0, 0, 0) }
-            })),
-    new BsonDocument("$group",
-    new BsonDocument
+            var group1Facet = AggregateFacet.Create("group1", group1);
+
+            var group2Facet = AggregateFacet.Create("group2", group2);
+
+            var hours = await GetCollection<Models.Task>().Aggregate().Match(endDateFilter & startDateFilter & employeeFilter)
+                .Facet(group1Facet, group2Facet)
+                .Unwind<DaysGrouping>("group1")
+                .Project(
+                x =>
+
+                new BsonDocument
         {
-            { "_id", "$Date" },
-            { "total",
-    new BsonDocument("$sum", "$HoursSpent") }
-        }),
-    new BsonDocument("$project",
-    new BsonDocument("doc",
-    new BsonDocument
-            {
-                { "_id", "$_id" },
-                { "subtotal", "$total" }
-            })),
-    new BsonDocument("$group",
-    new BsonDocument
-        {
-            { "_id", BsonNull.Value },
-            { "total",
-    new BsonDocument("$sum", "$doc.subtotal") },
-            { "result",
-    new BsonDocument("$push", "$doc") }
-        }),
-    new BsonDocument("$project",
-    new BsonDocument
-        {
-            { "result", 1 },
             { "_id", 0 },
-            { "total", 1 }
-        })
-}
-);
-*/
+            { "group1facet", "$group1.total" },
+            { "group2facet", "$group2" }
+        }
+                )
+                //.SortBy(t => t.Date)
+                .ToListAsync();
+
+            //var test = await GetCollection<Models.Task>().Aggregate(pipeline).ToListAsync();
+
+            //var hourDictionary = hours.ToDictionary(t => t.Date, t => t.Total);
+            /*
+            pipeline = pipeline.Group(
+                t => t.Date,
+                group => new
+                {
+                    Date = group.Key,
+                    TotalByDate = group.Sum(t => t.HoursSpent),
+                });
+            */
 
 
-            var hourDictionary = hours.ToDictionary(t => t.Date, t => t.Total);
-            return hourDictionary;
+            /*
+            var group = AggregateFacet.Create<Models.Task, Models.Task>("test",
+                (t => t.Date,
+                group => new
+                {
+                    Date = group.Key,
+                    TotalByDate = group.Sum(t => t.HoursSpent),
+                }));
+
+         var grouptest = BsonDocument.Create(
+                (t => null,
+                group => new
+                {
+                    Total = group.Sum(t => t.HoursSpent),
+                }));
+
+            var grouptest1 = new BsonDocument("$group",
+                new BsonDocument
+                    {
+                        { "_id", BsonNull.Value },
+                        { "total",
+                new BsonDocument("$sum", "$HoursSpent") }
+                    });
+
+            var group1 = pipeline.Group(
+                t => BsonNull.Value,
+                group => new
+                {
+                    Total = group.Sum(t => t.HoursSpent),
+                });
+
+            var group2 = pipeline.Group(
+                t => t.Date,
+                group => new
+                {
+                    Date = group.Key,
+                    TotalByDate = group.Sum(t => t.HoursSpent),
+                });
+
+            var finalPipeline = pipeline.AppendStage<Models.Task, Models.Task, Models.Task>(grouptest1);
+
+            var group1Facet = AggregateFacet.Create("test", group1); 
+
+            var group2Facet = AggregateFacet.Create("test", group2);
+
+            var test = AggregateFacet.Create("test", finalPipeline);
+
+            var projectionBuilder = Builders<Models.Task>.Projection;
+
+            //var projection = projectionBuilder.Include();
+            */
+            //var hourDictionary = hours.ToDictionary(t => t.Date, t => t.TotalByDate);
+            //var hourDictionary = hours.ToDictionary(t => t, t => t.);
+            //return hourDictionary;
+            return null;
+        }
+
+        private class DaysGrouping
+        {
+            public TestObject Group1 { get; set; }
+
+            public TestObject[] Group2 { get; set; }
+        }
+
+        public class TestObject
+        {
+            public DateTime Date { get; set; }
+
+            public int Total { get; set; }
         }
     }
 }
