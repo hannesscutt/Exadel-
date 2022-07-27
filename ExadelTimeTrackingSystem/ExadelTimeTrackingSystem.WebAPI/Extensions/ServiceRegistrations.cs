@@ -1,5 +1,6 @@
 ﻿namespace ExadelTimeTrackingSystem.WebAPI.Extensions
 {
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.Services;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@
             services.AddSingleton<IProjectService, ProjectService>();
             services.AddSingleton<ITaskService, TaskService>();
             services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             return services;
         }

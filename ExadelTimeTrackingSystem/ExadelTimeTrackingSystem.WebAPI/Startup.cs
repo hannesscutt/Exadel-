@@ -1,5 +1,6 @@
 namespace ExadelTimeTrackingSystem.WebAPI
 {
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
@@ -34,6 +35,8 @@ namespace ExadelTimeTrackingSystem.WebAPI
 
             services.Configure<TimeOutSettings>(Configuration.GetSection(nameof(TimeOutSettings)));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+            services.AddSingleton(Configuration.GetSection(nameof(EmailConfiguration)).Get<EmailConfiguration>());
 
             services.AddRepositories();
             services.AddServices();

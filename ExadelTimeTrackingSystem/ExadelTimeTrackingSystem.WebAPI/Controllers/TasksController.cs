@@ -5,6 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.Threading;
     using System.Threading.Tasks;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Helpers;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
@@ -18,11 +19,13 @@
     {
         private readonly ITaskService _service;
         private readonly IOptionsMonitor<TimeOutSettings> _options;
+        private readonly IEmailSender _emailSender;
 
-        public TasksController(ITaskService service, IOptionsMonitor<TimeOutSettings> options)
+        public TasksController(ITaskService service, IOptionsMonitor<TimeOutSettings> options, IEmailSender emailSender)
         {
             _service = service;
             _options = options;
+            _emailSender = emailSender; 
         }
 
         [HttpGet]
@@ -99,6 +102,14 @@
             cancellationToken.ThrowIfCancellationRequested();
             var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto, cancellationToken);
             return Created(string.Empty, tasksDto);
+        }
+
+        [HttpGet("emailtest")]
+        public async Task<ActionResult> SendEmailTest()
+        {
+            var message = new Message(new string[] { "goatblackmagic@gmail.com" }, "test email", "this is test email");
+            _emailSender.SendEmail(message);
+            return NoContent();
         }
     }
 }
