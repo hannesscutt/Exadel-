@@ -27,5 +27,7 @@
         Task<bool> ExistAsync(List<Guid> ids, CancellationToken cancellationToken);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
+
+        Task EmailApproverAsync(Guid id, CancellationToken cancellationToken);
     }
 }

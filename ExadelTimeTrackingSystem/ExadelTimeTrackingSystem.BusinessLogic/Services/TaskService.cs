@@ -102,5 +102,24 @@
             cancellationToken.ThrowIfCancellationRequested();
             return _repository.ExistsAsync(id, cancellationToken);
         }
+
+        public async Task EmailApproverAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            List<int> hours = new List<int>();
+            List<Guid> projectIds = new List<Guid>();
+            List<DateTime> dates = new List<DateTime>();
+            List<string> messages = new List<string>();
+            var list = await _repository.EmailApproverAsync(id, cancellationToken);
+            var name = "tempName";
+            foreach (var task in list)
+            {
+                hours.Add(task.HoursSpent);
+                projectIds.Add(task.ProjectId);
+                dates.Add(task.Date);
+            }
+
+            return null;
+        }
     }
 }

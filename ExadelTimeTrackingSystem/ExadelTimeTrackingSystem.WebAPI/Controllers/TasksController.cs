@@ -17,13 +17,13 @@
     [Route("[controller]")]
     public class TasksController : ControllerBase
     {
-        private readonly ITaskService _service;
+        private readonly ITaskService _taskService;
         private readonly IOptionsMonitor<TimeOutSettings> _options;
         private readonly IEmailSender _emailSender;
 
-        public TasksController(ITaskService service, IOptionsMonitor<TimeOutSettings> options, IEmailSender emailSender)
+        public TasksController(ITaskService taskService, IOptionsMonitor<TimeOutSettings> options, IEmailSender emailSender, IUserService userService)
         {
-            _service = service;
+            _taskService = taskService;
             _options = options;
             _emailSender = emailSender; 
         }
@@ -33,7 +33,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetAllAsync(cancellationToken);
+            var tasks = await _taskService.GetAllAsync(cancellationToken);
             return Ok(tasks);
         }
 
@@ -42,7 +42,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var task = await _service.GetByIdAsync(id, cancellationToken);
+            var task = await _taskService.GetByIdAsync(id, cancellationToken);
             return task == null ? NotFound() : Ok(task);
         }
 
@@ -51,7 +51,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var taskDto = await _service.CreateAsync(task, cancellationToken);
+            var taskDto = await _taskService.CreateAsync(task, cancellationToken);
             return Created(string.Empty, taskDto);
         }
 
@@ -61,7 +61,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetOnDateAsync(date, cancellationToken);
+            var tasks = await _taskService.GetOnDateAsync(date, cancellationToken);
             return Ok(tasks);
         }
 
@@ -71,7 +71,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            await _service.DeleteAsync(id, cancellationToken);
+            await _taskService.DeleteAsync(id, cancellationToken);
             return NoContent();
         }
 
@@ -80,7 +80,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var taskDto = await _service.UpdateAsync(task, cancellationToken);
+            var taskDto = await _taskService.UpdateAsync(task, cancellationToken);
             return Ok(taskDto);
         }
 
@@ -90,7 +90,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            await _service.ApproveAsync(approveTaskDto.Date, approveTaskDto.ProjectId, approveTaskDto.EmployeeID, cancellationToken);
+            await _taskService.ApproveAsync(approveTaskDto.Date, approveTaskDto.ProjectId, approveTaskDto.EmployeeID, cancellationToken);
             return NoContent();
         }
 
@@ -100,7 +100,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto, cancellationToken);
+            var tasksDto = await _taskService.BulkCreateAsync(bulkCreateTaskDto, cancellationToken);
             return Created(string.Empty, tasksDto);
         }
 
