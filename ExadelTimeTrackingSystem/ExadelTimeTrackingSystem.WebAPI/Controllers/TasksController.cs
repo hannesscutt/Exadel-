@@ -20,12 +20,14 @@
         private readonly ITaskService _taskService;
         private readonly IOptionsMonitor<TimeOutSettings> _options;
         private readonly IEmailSender _emailSender;
+        private readonly IUserService _userService;
 
         public TasksController(ITaskService taskService, IOptionsMonitor<TimeOutSettings> options, IEmailSender emailSender, IUserService userService)
         {
             _taskService = taskService;
             _options = options;
-            _emailSender = emailSender; 
+            _emailSender = emailSender;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -105,10 +107,26 @@
         }
 
         [HttpGet("emailtest")]
-        public async Task<ActionResult> SendEmailTest()
+        public async Task<ActionResult> SendEmailTest([FromQuery] Guid employeeId)
         {
-            var message = new Message(new string[] { "goatblackmagic@gmail.com" }, "test email", "this is test email");
-            _emailSender.SendEmail(message);
+            var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            List<string> approverNames = new List<string>();
+            List<string> approverEmails = new List<string>();
+            var employeeName = await _userService.GetNameAsync(employeeId, cancellationToken);
+            var approverIdList = await _taskService.GetApproversAsync(employeeId, cancellationToken);
+
+            foreach (var approver in approverIdList)
+            {
+                approverNames.Add(await _userService.GetNameAsync(employeeId, cancellationToken));
+                approverEmails.Add(await _userService.GetEmailAsync(employeeId, cancellationToken));
+            }
+
+            var messages = await _taskService.EmailApproverAsync(approverNames, approverEmails, employeeName, employeeId, cancellationToken);
+
+            //var message = new Message(new string[] { "goatblackmagic@gmail.com" }, "test email", "this is test email");
+            //_emailSender.SendEmail(message);
             return NoContent();
         }
     }

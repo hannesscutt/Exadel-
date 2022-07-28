@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
@@ -103,23 +104,27 @@
             return _repository.ExistsAsync(id, cancellationToken);
         }
 
-        public async Task EmailApproverAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<List<Message>> EmailApproverAsync(List<string> approverNames, List<string> approverEmails, string employeeName, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            List<int> hours = new List<int>();
-            List<Guid> projectIds = new List<Guid>();
-            List<DateTime> dates = new List<DateTime>();
-            List<string> messages = new List<string>();
-            var list = await _repository.EmailApproverAsync(id, cancellationToken);
-            var name = "tempName";
-            foreach (var task in list)
+            List<Message> messages = new List<Message>();
+
+            var taskList = await _repository.EmailApproverAsync(approverNames, approverEmails, employeeName, employeeId, cancellationToken);
+            var zippedLists = approverNames.Zip(approverEmails);
+            zippedLists.Zip(taskList);
+            foreach (var entry in zippedLists)
             {
-                hours.Add(task.HoursSpent);
-                projectIds.Add(task.ProjectId);
-                dates.Add(task.Date);
+                Console.WriteLine(entry.First);
+                Console.WriteLine(entry.Second);
             }
 
             return null;
+        }
+
+        public Task<List<Guid>> GetApproversAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.GetApproversAsync(id, cancellationToken);
         }
     }
 }

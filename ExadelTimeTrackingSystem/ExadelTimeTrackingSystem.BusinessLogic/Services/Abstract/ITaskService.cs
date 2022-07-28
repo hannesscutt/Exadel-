@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
 
     public interface ITaskService
@@ -28,6 +29,8 @@
 
         Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken);
 
-        Task EmailApproverAsync(Guid id, CancellationToken cancellationToken);
+        Task<List<Message>> EmailApproverAsync(List<string> approverNames, List<string> approverEmails, string employeeName, Guid employeeId, CancellationToken cancellationToken);
+
+        Task<List<Guid>> GetApproversAsync(Guid id, CancellationToken cancellationToken);
     }
 }

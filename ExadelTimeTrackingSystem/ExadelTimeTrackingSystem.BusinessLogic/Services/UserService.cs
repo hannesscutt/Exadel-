@@ -28,5 +28,17 @@
             cancellationToken.ThrowIfCancellationRequested();
             return _repository.ExistsAsync(id, cancellationToken);
         }
+
+        public Task<string> GetNameAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.GetNameAsync(id, cancellationToken);
+        }
+
+        public Task<string> GetEmailAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.GetEmailAsync(id, cancellationToken);
+        }
     }
 }

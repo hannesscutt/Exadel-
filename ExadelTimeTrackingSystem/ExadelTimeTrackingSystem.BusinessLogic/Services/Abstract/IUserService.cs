@@ -11,5 +11,9 @@
         Task<bool> ExistAsync(List<Guid> ids, CancellationToken token);
 
         Task<bool> ExistsAsync(Guid id, CancellationToken token);
+
+        Task<string> GetNameAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<string> GetEmailAsync(Guid id, CancellationToken cancellationToken);
     }
 }
