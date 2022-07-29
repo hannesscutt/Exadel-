@@ -119,14 +119,17 @@
 
             foreach (var approver in approverIdList)
             {
-                approverNames.Add(await _userService.GetNameAsync(employeeId, cancellationToken));
-                approverEmails.Add(await _userService.GetEmailAsync(employeeId, cancellationToken));
+                approverNames.Add(await _userService.GetNameAsync(approver, cancellationToken));
+                approverEmails.Add(await _userService.GetEmailAsync(approver, cancellationToken));
             }
 
             var messages = await _taskService.EmailApproverAsync(approverNames, approverEmails, employeeName, employeeId, cancellationToken);
 
-            //var message = new Message(new string[] { "goatblackmagic@gmail.com" }, "test email", "this is test email");
-            //_emailSender.SendEmail(message);
+            foreach (var message in messages)
+            {
+                _emailSender.SendEmail(message);
+            }
+
             return NoContent();
         }
     }
