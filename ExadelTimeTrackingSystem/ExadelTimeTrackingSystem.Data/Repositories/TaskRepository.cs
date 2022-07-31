@@ -55,9 +55,9 @@
 
             var filterBuilder = Builders<Models.Task>.Filter;
             var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
-            //var statusFilter = filterBuilder.Eq(t => t.Status, Models.Enums.Status.WaitingForApproval);
+            var statusFilter = filterBuilder.Eq(t => t.Status, Models.Enums.Status.WaitingForApproval);
 
-            return GetCollection<Models.Task>().Find(/*statusFilter &*/ employeeFilter).SortBy(t => t.ApproverId).ToListAsync();
+            return GetCollection<Models.Task>().Find(statusFilter & employeeFilter).SortBy(t => t.ApproverId).ToListAsync();
         }
 
         public Task<List<Guid>> GetApproversAsync(Guid id, CancellationToken cancellationToken)
@@ -65,9 +65,9 @@
             cancellationToken.ThrowIfCancellationRequested();
             var filterBuilder = Builders<Models.Task>.Filter;
             var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, id);
-            //var statusFilter = filterBuilder.Eq(t => t.Status, Models.Enums.Status.WaitingForApproval);
+            var statusFilter = filterBuilder.Eq(t => t.Status, Models.Enums.Status.WaitingForApproval);
 
-            return GetCollection<Models.Task>().Find(employeeFilter /*& statusFilter*/).SortBy(t => t.ApproverId).Project(t => t.ApproverId).ToListAsync();
+            return GetCollection<Models.Task>().Find(employeeFilter & statusFilter).SortBy(t => t.ApproverId).Project(t => t.ApproverId).ToListAsync();
         }
     }
 }

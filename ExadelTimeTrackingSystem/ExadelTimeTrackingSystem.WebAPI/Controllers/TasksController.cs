@@ -107,7 +107,7 @@
         }
 
         [HttpGet("emailtest")]
-        public async Task<ActionResult> SendEmailTest([FromQuery] Guid employeeId)
+        public async Task<ActionResult> SendEmailToApproversAsync([FromQuery] Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();

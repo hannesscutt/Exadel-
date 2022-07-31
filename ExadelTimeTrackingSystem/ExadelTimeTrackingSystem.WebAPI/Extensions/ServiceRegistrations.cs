@@ -3,6 +3,9 @@
     using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.Services;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using Hangfire;
+    using Hangfire.SqlServer;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceRegistrations
