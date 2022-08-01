@@ -21,7 +21,7 @@
 
         Task<TaskDTO> UpdateAsync(UpdateTaskDTO task, CancellationToken cancellationToken);
 
-        Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken);
+        Task ApproveAsync(ApproveTaskDTO approveTaskDto, CancellationToken cancellationToken);
 
         Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken cancellationToken);
 
