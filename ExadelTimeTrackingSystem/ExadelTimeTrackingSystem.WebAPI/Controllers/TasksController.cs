@@ -87,7 +87,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            await _service.ApproveAsync(approveTaskDto, cancellationToken);
+            await _taskService.ApproveAsync(approveTaskDto, cancellationToken);
             return NoContent();
         }
 
