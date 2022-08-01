@@ -23,7 +23,7 @@
         private void ConfigureRules()
         {
             RuleFor(t => t.Task)
-                .NotEmpty();
+                .NotEmpty()
                 .SetValidator(_createTaskDtoValidator);
 
             RuleFor(t => t.Dates)
