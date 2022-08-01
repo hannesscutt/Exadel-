@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailService", "EmailService\EmailService.csproj", "{1DDA685C-50EB-48D8-AE8F-5A9FE722243E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{C625F31F-D177-4C62-AC1A-9A48F036661B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C625F31F-D177-4C62-AC1A-9A48F036661B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C625F31F-D177-4C62-AC1A-9A48F036661B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DDA685C-50EB-48D8-AE8F-5A9FE722243E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DDA685C-50EB-48D8-AE8F-5A9FE722243E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DDA685C-50EB-48D8-AE8F-5A9FE722243E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DDA685C-50EB-48D8-AE8F-5A9FE722243E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

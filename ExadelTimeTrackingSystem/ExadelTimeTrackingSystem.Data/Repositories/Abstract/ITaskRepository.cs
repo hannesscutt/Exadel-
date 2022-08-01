@@ -14,5 +14,9 @@
         Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken);
 
         Task BulkCreateAsync(List<Models.Task> tasks, CancellationToken cancellationToken);
+
+        Task<List<Models.Task>> EmailApproverAsync(List<string> approverNames, List<string> approverEmails, string employeeName, Guid employeeId, CancellationToken cancellationToken);
+
+        Task<List<Guid>> GetApproversAsync(Guid id, CancellationToken cancellationToken);
     }
 }

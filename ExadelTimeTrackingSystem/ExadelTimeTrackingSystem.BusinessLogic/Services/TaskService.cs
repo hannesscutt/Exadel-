@@ -6,9 +6,11 @@
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
+    using Mustache;
 
     public class TaskService : ITaskService
     {
@@ -101,6 +103,57 @@
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _repository.ExistsAsync(id, cancellationToken);
+        }
+
+        public async Task<List<Message>> EmailApproverAsync(List<string> approverNames, List<string> approverEmails, string employeeName, Guid employeeId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            List<Message> messages = new List<Message>();
+            string currentRecepient = string.Empty;
+            string currentApprover = string.Empty;
+            string message = Constants.MustacheTemplates.EMAILTABLEHEADER;
+            bool firstIteration = true;
+            var taskList = await _repository.EmailApproverAsync(approverNames, approverEmails, employeeName, employeeId, cancellationToken);
+            var zippedLists = approverNames.Zip(approverEmails).Zip(taskList);
+
+            foreach (var entry in zippedLists)
+            {
+                if (firstIteration)
+                {
+                    currentApprover = entry.First.First;
+                    currentRecepient = entry.First.Second;
+                    firstIteration = false;
+                }
+
+                var data = new
+                {
+                    EmployeeName = employeeName,
+                    Hours = entry.Second.HoursSpent,
+                    Date = entry.Second.Date.ToLongDateString(),
+                    ProjectName = entry.Second.ProjectName,
+                };
+
+                if (entry.First.Second == currentRecepient)
+                {
+                    message = message + Template.Compile(Constants.MustacheTemplates.EMAILTABLEBODY).Render(data);
+                }
+                else
+                {
+                    messages.Add(new Message(new string[] { currentRecepient }, "Hello " + currentApprover, message));
+                    currentRecepient = entry.First.Second;
+                    currentApprover = entry.First.First;
+                    message = Constants.MustacheTemplates.EMAILTABLEHEADER + Template.Compile(Constants.MustacheTemplates.EMAILTABLEBODY).Render(data);
+                }
+            }
+
+            messages.Add(new Message(new string[] { currentRecepient }, "Hello " + currentApprover, message));
+            return messages;
+        }
+
+        public Task<List<Guid>> GetApproversAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _repository.GetApproversAsync(id, cancellationToken);
         }
     }
 }

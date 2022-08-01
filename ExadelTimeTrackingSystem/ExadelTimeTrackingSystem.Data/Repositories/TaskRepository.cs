@@ -48,5 +48,26 @@
             cancellationToken.ThrowIfCancellationRequested();
             return GetCollection<Models.Task>().InsertManyAsync(tasks);
         }
+
+        public Task<List<Models.Task>> EmailApproverAsync(List<string> approverNames, List<string> approverEmails, string employeeName, Guid employeeId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var filterBuilder = Builders<Models.Task>.Filter;
+            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, employeeId);
+            var statusFilter = filterBuilder.Eq(t => t.Status, Models.Enums.Status.WaitingForApproval);
+
+            return GetCollection<Models.Task>().Find(/*statusFilter &*/ employeeFilter).SortBy(t => t.ApproverId).ToListAsync();
+        }
+
+        public Task<List<Guid>> GetApproversAsync(Guid id, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var filterBuilder = Builders<Models.Task>.Filter;
+            var employeeFilter = filterBuilder.Eq(t => t.EmployeeId, id);
+            var statusFilter = filterBuilder.Eq(t => t.Status, Models.Enums.Status.WaitingForApproval);
+
+            return GetCollection<Models.Task>().Find(employeeFilter /*& statusFilter*/).SortBy(t => t.ApproverId).Project(t => t.ApproverId).ToListAsync();
+        }
     }
 }

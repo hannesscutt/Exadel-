@@ -1,10 +1,14 @@
 namespace ExadelTimeTrackingSystem.WebAPI
 {
+    using System;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.Extensions;
     using ExadelTimeTrackingSystem.Data.Configuration.Abstract;
     using ExadelTimeTrackingSystem.WebAPI.Configuration;
     using ExadelTimeTrackingSystem.WebAPI.Extensions;
     using ExadelTimeTrackingSystem.WebAPI.Infrastructure;
+    using Hangfire;
+    using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Routing;
@@ -35,6 +39,8 @@ namespace ExadelTimeTrackingSystem.WebAPI
             services.Configure<TimeOutSettings>(Configuration.GetSection(nameof(TimeOutSettings)));
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+            services.AddSingleton(Configuration.GetSection(nameof(EmailConfiguration)).Get<EmailConfiguration>());
+
             services.AddRepositories();
             services.AddServices();
             services.AddValidators();
@@ -50,16 +56,31 @@ namespace ExadelTimeTrackingSystem.WebAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExadelTimeTrackingSystem.WebAPI", Version = "v1" });
             });
+
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true,
+                }));
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobManager)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExadelTimeTrackingSystem.WebAPI v1"));
+                app.UseHangfireDashboard();
             }
 
             app.UseHttpsRedirection();
