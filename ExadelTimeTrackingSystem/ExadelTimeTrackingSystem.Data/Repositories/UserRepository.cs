@@ -31,5 +31,13 @@
             var filter = filterBuilder.Eq(u => u.Id, id);
             return GetCollection<User>().Find(filter).Project(u => u.Email).SingleOrDefaultAsync();
         }
+
+        public Task<List<string>> WeeklyApproverEmailAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var filterBuilder = Builders<User>.Filter;
+            var filter = filterBuilder.AnyEq(u => u.Roles, Models.Enums.Role.Approver);
+            return GetCollection<User>().Find(filter).Project(u => u.Email).ToListAsync();
+        }
     }
 }

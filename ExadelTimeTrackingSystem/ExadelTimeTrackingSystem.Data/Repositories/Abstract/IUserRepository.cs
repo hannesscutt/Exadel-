@@ -11,5 +11,7 @@
         Task<string> GetNameAsync(Guid id, CancellationToken cancellationToken);
 
         Task<string> GetEmailAsync(Guid id, CancellationToken cancellationToken);
+
+        Task<List<string>> WeeklyApproverEmailAsync(CancellationToken cancellationToken);
     }
 }

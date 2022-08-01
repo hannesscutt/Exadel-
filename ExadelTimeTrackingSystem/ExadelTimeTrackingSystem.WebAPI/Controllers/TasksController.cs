@@ -106,7 +106,7 @@
             return Created(string.Empty, tasksDto);
         }
 
-        [HttpGet("emailtest")]
+        [HttpPost("emailtest")]
         public async Task<ActionResult> SendEmailToApproversAsync([FromQuery] Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);

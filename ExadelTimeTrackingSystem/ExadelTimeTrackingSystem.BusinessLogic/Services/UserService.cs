@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using AutoMapper;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
 
@@ -39,6 +40,19 @@
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _repository.GetEmailAsync(id, cancellationToken);
+        }
+
+        public async Task<List<Message>> WeeklyApproverEmailAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            List<Message> messages = new List<Message>();
+            var emailList = await _repository.WeeklyApproverEmailAsync(cancellationToken);
+            foreach (var email in emailList)
+            {
+                messages.Add(new Message(new string[] { email }, "Weekly Approver Reminder", "Please remember to submit your approval tables today. Thank you");
+            }
+
+            return messages;
         }
     }
 }
