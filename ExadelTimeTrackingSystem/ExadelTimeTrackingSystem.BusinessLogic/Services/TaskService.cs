@@ -70,10 +70,10 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public Task ApproveAsync(DateTime date, Guid projectId, Guid employeeId, CancellationToken cancellationToken)
+        public Task ApproveAsync(ApproveTaskDTO approveTaskDto, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return _repository.ApproveAsync(date, projectId, employeeId, cancellationToken);
+            return _repository.ApproveAsync(approveTaskDto.Date, approveTaskDto.ProjectId, approveTaskDto.EmployeeId, cancellationToken);
         }
 
         public async Task<List<TaskDTO>> BulkCreateAsync(BulkCreateTaskDTO bulkCreateTaskDto, CancellationToken cancellationToken)

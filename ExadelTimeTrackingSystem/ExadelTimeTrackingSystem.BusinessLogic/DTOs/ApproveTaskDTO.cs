@@ -12,6 +12,6 @@
 
         public Guid ProjectId { get; set; }
 
-        public Guid EmployeeID { get; set; }
+        public Guid EmployeeId { get; set; }
     }
 }
