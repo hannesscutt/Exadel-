@@ -49,7 +49,7 @@
             var emailList = await _repository.WeeklyApproverEmailAsync(cancellationToken);
             foreach (var email in emailList)
             {
-                messages.Add(new Message(new string[] { email }, "Weekly Approver Reminder", "Please remember to submit your approval tables today. Thank you");
+                messages.Add(new Message(new string[] { email }, "Weekly Approver Reminder", "Please remember to submit your approval tables today. Thank you"));
             }
 
             return messages;

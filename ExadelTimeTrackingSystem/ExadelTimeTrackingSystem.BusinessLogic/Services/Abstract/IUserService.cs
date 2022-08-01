@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using EmailService;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
 
     public interface IUserService
@@ -16,6 +17,6 @@
 
         Task<string> GetEmailAsync(Guid id, CancellationToken cancellationToken);
 
-        Task<List<string>> WeeklyApproverEmailAsync(CancellationToken cancellationToken);
+        Task<List<Message>> WeeklyApproverEmailAsync(CancellationToken cancellationToken);
     }
 }
