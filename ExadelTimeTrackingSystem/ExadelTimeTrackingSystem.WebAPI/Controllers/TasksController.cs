@@ -16,21 +16,21 @@
     [Route("[controller]")]
     public class TasksController : ControllerBase
     {
-        private readonly ITaskService _service;
+        private readonly ITaskService _taskService;
         private readonly IOptionsMonitor<TimeOutSettings> _options;
 
         public TasksController(ITaskService service, IOptionsMonitor<TimeOutSettings> options)
         {
-            _service = service;
+            _taskService = service;
             _options = options;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<TaskDTO>>> GetAllAsync()
+        public async Task<ActionResult<List<TaskDTO>>> GetAllAsync([FromQuery] Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetAllAsync(cancellationToken);
+            var tasks = await _taskService.GetAllForEmployeeAsync(employeeId, cancellationToken);
             return Ok(tasks);
         }
 
@@ -39,7 +39,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var task = await _service.GetByIdAsync(id, cancellationToken);
+            var task = await _taskService.GetByIdAsync(id, cancellationToken);
             return task == null ? NotFound() : Ok(task);
         }
 
@@ -48,17 +48,17 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var taskDto = await _service.CreateAsync(task, cancellationToken);
+            var taskDto = await _taskService.CreateAsync(task, cancellationToken);
             return Created(string.Empty, taskDto);
         }
 
         [HttpGet("on-date")]
 
-        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date)
+        public async Task<ActionResult<List<TaskDTO>>> GetOnDateAsync([FromQuery, Required] DateTime date, [FromQuery] Guid employeeId)
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _service.GetOnDateAsync(date, cancellationToken);
+            var tasks = await _taskService.GetOnDateAsync(date, employeeId, cancellationToken);
             return Ok(tasks);
         }
 
@@ -68,7 +68,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            await _service.DeleteAsync(id, cancellationToken);
+            await _taskService.DeleteAsync(id, cancellationToken);
             return NoContent();
         }
 
@@ -77,7 +77,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var taskDto = await _service.UpdateAsync(task, cancellationToken);
+            var taskDto = await _taskService.UpdateAsync(task, cancellationToken);
             return Ok(taskDto);
         }
 
@@ -87,7 +87,7 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            await _service.ApproveAsync(approveTaskDto, cancellationToken);
+            await _taskService.ApproveAsync(approveTaskDto, cancellationToken);
             return NoContent();
         }
 
@@ -97,8 +97,18 @@
         {
             var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
             cancellationToken.ThrowIfCancellationRequested();
-            var tasksDto = await _service.BulkCreateAsync(bulkCreateTaskDto, cancellationToken);
+            var tasksDto = await _taskService.BulkCreateAsync(bulkCreateTaskDto, cancellationToken);
             return Created(string.Empty, tasksDto);
+        }
+
+        [HttpGet("hours-by-dates")]
+
+        public async Task<ActionResult<Dictionary<string,int>>> GetHoursByDatesAsync([FromQuery] GetHoursDTO hoursDto)
+        {
+            var cancellationToken = CancellationTokenCreator.Create(_options.CurrentValue.TimeOutSeconds);
+            cancellationToken.ThrowIfCancellationRequested();
+            var hours = await _taskService.GetHoursByDatesAsync(hoursDto, cancellationToken);
+            return Ok(hours);
         }
     }
 }

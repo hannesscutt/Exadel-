@@ -8,6 +8,7 @@
     using AutoMapper;
     using ExadelTimeTrackingSystem.BusinessLogic.DTOs;
     using ExadelTimeTrackingSystem.BusinessLogic.Services.Abstract;
+    using ExadelTimeTrackingSystem.Data.Extensions;
     using ExadelTimeTrackingSystem.Data.Repositories.Abstract;
 
     public class TaskService : ITaskService
@@ -32,10 +33,10 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetAllAsync(CancellationToken cancellationToken)
+        public async Task<List<TaskDTO>> GetAllForEmployeeAsync(Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _repository.GetAllAsync(cancellationToken);
+            var tasks = await _repository.GetAllForEmployeeAsync(employeeId, cancellationToken);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
@@ -46,10 +47,10 @@
             return _mapper.Map<TaskDTO>(task);
         }
 
-        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date, CancellationToken cancellationToken)
+        public async Task<List<TaskDTO>> GetOnDateAsync(DateTime date, Guid employeeId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var tasks = await _repository.GetOnDateAsync(date, cancellationToken);
+            var tasks = await _repository.GetOnDateAsync(date, employeeId, cancellationToken);
             return _mapper.Map<List<TaskDTO>>(tasks);
         }
 
@@ -101,6 +102,25 @@
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _repository.ExistsAsync(id, cancellationToken);
+        }
+
+        public async Task<Dictionary<string, int>> GetHoursByDatesAsync(GetHoursDTO hoursDto, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var hourDictionary = await _repository.GetHoursByDatesAsync(hoursDto.Date, hoursDto.EmployeeId, cancellationToken);
+
+            foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+            {
+               if (!hourDictionary.Any(d => d.Key.Date.DayOfWeek == day))
+                {
+                    hourDictionary.Add(hoursDto.Date.AddDays((int)day), 0);
+                }
+            }
+
+            var test = hourDictionary.ToDictionary(d => d.Key.DayOfWeek.ToString(), d => d.Value);
+            test.Add(Constants.TaskMessages.TOTAL, hourDictionary.Values.Sum());
+
+            return test;
         }
     }
 }

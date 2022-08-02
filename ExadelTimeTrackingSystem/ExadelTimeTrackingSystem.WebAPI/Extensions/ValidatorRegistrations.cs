@@ -18,6 +18,7 @@
             services.AddScoped<IValidator<UpdateTaskDTO>, UpdateTaskDTOValidator>();
             services.AddScoped<IValidator<BulkCreateTaskDTO>, BulkCreateTaskDTOValidator>();
             services.AddScoped<IValidator<ApproveTaskDTO>, ApproveTaskDTOValidator>();
+            services.AddScoped<IValidator<GetHoursDTO>, GetHoursDTOValidator>();
             services.AddScoped<IValidatorFactory, ServiceProviderValidatorFactory>();
             return services;
         }
